@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "exports": "./dist/index.js",
+  "sideEffects": false,
   "scripts": {
     "test": "vitest run",
     "test:ci": "vitest run --reporter=verbose",
