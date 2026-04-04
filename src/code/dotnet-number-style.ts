@@ -1,5 +1,6 @@
-import { CommaText } from "./comma-text";
+import { CommaText, Err, Ok, Result } from "@pbkware/js-utils";
 
+/** @public */
 export enum DotNetNumberStyleId {
   AllowCurrencySymbol = "AllowCurrencySymbol",
   AllowDecimalPoint = "AllowDecimalPoint",
@@ -13,8 +14,10 @@ export enum DotNetNumberStyleId {
   AllowTrailingWhite = "AllowTrailingWhite",
 }
 
+/** @public */
 export type DotNetNumberStyleSet = Set<DotNetNumberStyleId>;
 
+/** @internal */
 export const DotNetNumberStyles = {
   none: new Set<DotNetNumberStyleId>(),
   any: new Set<DotNetNumberStyleId>([
@@ -80,6 +83,7 @@ const isSameSet = (
   return true;
 };
 
+/** @internal */
 export class DotNetNumberStylesInfo {
   static toString(styles: DotNetNumberStyleSet): string {
     return this.toXmlValue(styles);
@@ -93,62 +97,58 @@ export class DotNetNumberStylesInfo {
     if (isSameSet(styles, DotNetNumberStyles.integer)) return "Integer";
     if (isSameSet(styles, DotNetNumberStyles.number)) return "Number";
 
-    return CommaText.from(Array.from(styles.values()));
+    return CommaText.fromStringArray(Array.from(styles.values()));
   }
 
-  static tryFromString(
-    value: string,
-  ): { success: true; styles: DotNetNumberStyleSet } | { success: false } {
+  static tryFromString(value: string): Result<DotNetNumberStyleSet> {
     return this.tryFromXmlValue(value);
   }
 
-  static tryFromXmlValue(
-    value: string,
-  ): { success: true; styles: DotNetNumberStyleSet } | { success: false } {
+  static tryFromXmlValue(value: string): Result<DotNetNumberStyleSet> {
     const normalized = value.trim();
     if (normalized.length === 0 || normalized.toLowerCase() === "none") {
-      return { success: true, styles: new Set(DotNetNumberStyles.none) };
+      return new Ok(new Set(DotNetNumberStyles.none));
     }
 
     const canonical = normalized.toLowerCase();
-    if (canonical === "any")
-      return { success: true, styles: new Set(DotNetNumberStyles.any) };
+    if (canonical === "any") return new Ok(new Set(DotNetNumberStyles.any));
     if (canonical === "currency")
-      return { success: true, styles: new Set(DotNetNumberStyles.currency) };
-    if (canonical === "float")
-      return { success: true, styles: new Set(DotNetNumberStyles.float) };
+      return new Ok(new Set(DotNetNumberStyles.currency));
+    if (canonical === "float") return new Ok(new Set(DotNetNumberStyles.float));
     if (canonical === "hexnumber")
-      return { success: true, styles: new Set(DotNetNumberStyles.hexNumber) };
+      return new Ok(new Set(DotNetNumberStyles.hexNumber));
     if (canonical === "integer")
-      return { success: true, styles: new Set(DotNetNumberStyles.integer) };
+      return new Ok(new Set(DotNetNumberStyles.integer));
     if (canonical === "number")
-      return { success: true, styles: new Set(DotNetNumberStyles.number) };
+      return new Ok(new Set(DotNetNumberStyles.number));
 
-    const split = CommaText.to(normalized);
-    if (!split.success) {
-      return { success: false };
+    const commaTextResult = CommaText.tryToStringArray(normalized);
+    if (commaTextResult.isErr()) {
+      return commaTextResult.createOuter(
+        "Invalid comma-separated styles string",
+      );
     }
 
     const result = new Set<DotNetNumberStyleId>();
-    for (const part of split.values) {
+    for (const part of commaTextResult.value) {
       const match = Object.values(DotNetNumberStyleId).find(
         (x) => x.toLowerCase() === part.toLowerCase(),
       );
       if (match === undefined) {
-        return { success: false };
+        return new Err(`Invalid style: ${part}`);
       }
       result.add(match);
     }
 
-    return { success: true, styles: result };
+    return new Ok(result);
   }
 
   static tryFromXmlValueWithDefault(
     value: string,
     defaultStyles: DotNetNumberStyleSet,
-  ): { success: true; styles: DotNetNumberStyleSet } | { success: false } {
+  ): Result<DotNetNumberStyleSet> {
     if (value.trim().length === 0) {
-      return { success: true, styles: new Set(defaultStyles) };
+      return new Ok(new Set(defaultStyles));
     }
     return this.tryFromXmlValue(value);
   }

@@ -1,5 +1,6 @@
-import { CommaText } from "./comma-text";
+import { CommaText, Err, Ok, Result } from "@pbkware/js-utils";
 
+/** @public */
 export enum DotNetDateTimeStyleId {
   AllowLeadingWhite = "AllowLeadingWhite",
   AllowTrailingWhite = "AllowTrailingWhite",
@@ -11,8 +12,10 @@ export enum DotNetDateTimeStyleId {
   RoundTripKind = "RoundTripKind",
 }
 
+/** @public */
 export type DotNetDateTimeStyleSet = Set<DotNetDateTimeStyleId>;
 
+/** @internal */
 export const DotNetDateTimeStyles = {
   none: new Set<DotNetDateTimeStyleId>(),
   allowWhiteSpaces: new Set<DotNetDateTimeStyleId>([
@@ -33,6 +36,7 @@ const isSameSet = (
   return true;
 };
 
+/** @internal */
 export class DotNetDateTimeStylesInfo {
   static toString(styles: DotNetDateTimeStyleSet): string {
     return this.toXmlValue(styles);
@@ -42,40 +46,36 @@ export class DotNetDateTimeStylesInfo {
     if (isSameSet(styles, DotNetDateTimeStyles.allowWhiteSpaces)) {
       return "AllowWhiteSpaces";
     }
-    return CommaText.from(Array.from(styles.values()));
+    return CommaText.fromStringArray(Array.from(styles.values()));
   }
 
-  static tryFromString(
-    value: string,
-  ): { success: true; styles: DotNetDateTimeStyleSet } | { success: false } {
+  static tryFromString(value: string): Result<DotNetDateTimeStyleSet> {
     return this.tryFromXmlValue(value);
   }
 
-  static tryFromXmlValue(
-    value: string,
-  ): { success: true; styles: DotNetDateTimeStyleSet } | { success: false } {
+  static tryFromXmlValue(value: string): Result<DotNetDateTimeStyleSet> {
     const normalized = value.trim();
     if (normalized.length === 0 || normalized.toLowerCase() === "none") {
-      return { success: true, styles: new Set(DotNetDateTimeStyles.none) };
+      return new Ok(new Set(DotNetDateTimeStyles.none));
     }
     if (normalized.toLowerCase() === "allowwhitespaces") {
-      return {
-        success: true,
-        styles: new Set(DotNetDateTimeStyles.allowWhiteSpaces),
-      };
+      return new Ok(new Set(DotNetDateTimeStyles.allowWhiteSpaces));
     }
 
-    const split = CommaText.to(normalized);
-    if (!split.success) return { success: false };
+    const commaTextResult = CommaText.tryToStringArray(normalized);
+    if (commaTextResult.isErr())
+      return commaTextResult.createOuter(
+        "Invalid comma-separated styles string",
+      );
 
     const styles = new Set<DotNetDateTimeStyleId>();
-    for (const item of split.values) {
+    for (const item of commaTextResult.value) {
       const match = Object.values(DotNetDateTimeStyleId).find(
         (x) => x.toLowerCase() === item.toLowerCase(),
       );
-      if (match === undefined) return { success: false };
+      if (match === undefined) return new Err(`Invalid style: ${item}`);
       styles.add(match);
     }
-    return { success: true, styles };
+    return new Ok(styles);
   }
 }

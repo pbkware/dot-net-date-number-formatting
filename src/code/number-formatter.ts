@@ -1,3 +1,4 @@
+import { Err, Ok, Result } from "@pbkware/js-utils";
 import {
   DotNetNumberStyleId,
   DotNetNumberStyleSet,
@@ -5,10 +6,7 @@ import {
 } from "./dotnet-number-style";
 import { FieldedTextLocaleSettings } from "./locale-settings";
 
-type ParseResult<T> =
-  | { success: true; value: T }
-  | { success: false; errorText: string };
-
+/** @public */
 export class DotNetNumberFormatter {
   format = "";
   styles: DotNetNumberStyleSet = new Set(DotNetNumberStyles.number);
@@ -62,26 +60,26 @@ export class DotNetNumberFormatter {
     return /\d/.test(value);
   }
 
-  static tryHexToInt64(hex: string): ParseResult<bigint> {
+  static tryHexToInt64(hex: string): Result<bigint> {
     const trimmed = hex.trim();
     if (
       trimmed.length === 0 ||
       trimmed.length > 16 ||
       !/^[0-9a-fA-F]+$/.test(trimmed)
     ) {
-      return { success: false, errorText: "Invalid hex format" };
+      return new Err("Invalid hex format");
     }
 
     try {
-      return { success: true, value: BigInt(`0x${trimmed}`) };
+      return new Ok(BigInt(`0x${trimmed}`));
     } catch {
-      return { success: false, errorText: "Invalid hex format" };
+      return new Err("Invalid hex format");
     }
   }
 
   protected unstyleNumberString(
     value: string,
-  ): ParseResult<{ unstyled: string; negated: boolean }> {
+  ): Result<{ unstyled: string; negated: boolean }> {
     let unstyled = value;
 
     if (
@@ -100,21 +98,15 @@ export class DotNetNumberFormatter {
     }
 
     if (unstyled.length === 0) {
-      return { success: false, errorText: "No digit character" };
+      return new Err("No digit character");
     }
 
     if (/^\s/.test(unstyled)) {
-      return {
-        success: false,
-        errorText: "Unallowed leading whitespace characters",
-      };
+      return new Err("Unallowed leading whitespace characters");
     }
 
     if (/\s$/.test(unstyled)) {
-      return {
-        success: false,
-        errorText: "Unallowed trailing whitespace characters",
-      };
+      return new Err("Unallowed trailing whitespace characters");
     }
 
     if (
@@ -125,7 +117,7 @@ export class DotNetNumberFormatter {
     }
 
     if (unstyled.length === 0) {
-      return { success: false, errorText: "No digit character" };
+      return new Err("No digit character");
     }
 
     let negated = false;
@@ -147,22 +139,23 @@ export class DotNetNumberFormatter {
     }
 
     if (unstyled.length === 0) {
-      return { success: false, errorText: "No digit character" };
+      return new Err("No digit character");
     }
 
-    return { success: true, value: { unstyled, negated } };
+    return new Ok({ unstyled, negated });
   }
 }
 
+/** @public */
 export class DotNetIntegerFormatter extends DotNetNumberFormatter {
   toString(value: bigint): string {
     return value.toString();
   }
 
-  tryFromString(strValue: string): ParseResult<bigint> {
+  tryFromString(strValue: string): Result<bigint> {
     const unstyled = this.unstyleNumberString(strValue);
-    if (!unstyled.success) {
-      return { success: false, errorText: unstyled.errorText };
+    if (unstyled.isErr()) {
+      return unstyled.createOuter("Invalid number format");
     }
 
     let { unstyled: text, negated } = unstyled.value;
@@ -178,11 +171,11 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
       }
 
       const hex = DotNetNumberFormatter.tryHexToInt64(text);
-      if (!hex.success) {
-        return { success: false, errorText: "Invalid hex format" };
+      if (hex.isErr()) {
+        return hex.createOuter("Invalid hex format");
       }
 
-      return { success: true, value: negated ? -hex.value : hex.value };
+      return new Ok(negated ? -hex.value : hex.value);
     }
 
     const hasLeadingSign = text.startsWith("+") || text.startsWith("-");
@@ -190,7 +183,7 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
       !this.styles.has(DotNetNumberStyleId.AllowLeadingSign) &&
       hasLeadingSign
     ) {
-      return { success: false, errorText: "Unallowed leading sign character" };
+      return new Err("Unallowed leading sign character");
     }
 
     const parseAsFloat =
@@ -206,39 +199,37 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
       );
       const floatValue = Number.parseFloat(normalized);
       if (!Number.isFinite(floatValue)) {
-        return {
-          success: false,
-          errorText: "Invalid float format (for Integer field)",
-        };
+        return new Err("Invalid float format (for Integer field)");
       }
       if (!Number.isInteger(floatValue)) {
-        return { success: false, errorText: "Value has fractional component" };
+        return new Err("Value has fractional component");
       }
-      return { success: true, value: BigInt(floatValue) };
+      return new Ok(BigInt(floatValue));
     }
 
     if (!/^[+-]?\d+$/.test(text)) {
-      return { success: false, errorText: "Invalid integer format" };
+      return new Err("Invalid integer format");
     }
 
     try {
       const value = BigInt(text);
-      return { success: true, value: negated ? -value : value };
+      return new Ok(negated ? -value : value);
     } catch {
-      return { success: false, errorText: "Invalid integer format" };
+      return new Err("Invalid integer format");
     }
   }
 }
 
+/** @public */
 export class DotNetDoubleFormatter extends DotNetNumberFormatter {
   toString(value: number): string {
     return this.localeSettings.floatToStr(value);
   }
 
-  tryFromString(strValue: string): ParseResult<number> {
+  tryFromString(strValue: string): Result<number> {
     const unstyled = this.unstyleNumberString(strValue);
-    if (!unstyled.success) {
-      return { success: false, errorText: unstyled.errorText };
+    if (unstyled.isErr()) {
+      return unstyled.createOuter("Invalid number format");
     }
 
     const { unstyled: text, negated } = unstyled.value;
@@ -248,50 +239,48 @@ export class DotNetDoubleFormatter extends DotNetNumberFormatter {
       !this.styles.has(DotNetNumberStyleId.AllowLeadingSign) &&
       hasLeadingSign
     ) {
-      return { success: false, errorText: "Unallowed leading sign character" };
+      return new Err("Unallowed leading sign character");
     }
     if (
       !this.styles.has(DotNetNumberStyleId.AllowExponent) &&
       this.hasExponentChar(text)
     ) {
-      return { success: false, errorText: "Unallowed exponent character" };
+      return new Err("Unallowed exponent character");
     }
     if (
       !this.styles.has(DotNetNumberStyleId.AllowDecimalPoint) &&
       this.hasDecimalChar(text)
     ) {
-      return { success: false, errorText: "Unallowed decimal point character" };
+      return new Err("Unallowed decimal point character");
     }
     if (!this.hasDigitChar(text)) {
-      return { success: false, errorText: "No digit character" };
+      return new Err("No digit character");
     }
 
     const normalized = text.replace(this.localeSettings.decimalSeparator, ".");
     const parsed = Number.parseFloat(normalized);
     if (!Number.isFinite(parsed)) {
-      return { success: false, errorText: "Invalid float format" };
+      return new Err("Invalid float format");
     }
 
-    return { success: true, value: negated ? -parsed : parsed };
+    return new Ok(negated ? -parsed : parsed);
   }
 }
 
+/** @public */
 export class DotNetDecimalFormatter extends DotNetNumberFormatter {
   toString(value: number): string {
     return this.trimTrailingPadZeros(this.localeSettings.currToStrF(value, 18));
   }
 
-  tryFromString(strValue: string): ParseResult<number> {
+  tryFromString(strValue: string): Result<number> {
     const doubleFormatter = new DotNetDoubleFormatter();
     doubleFormatter.styles = this.styles;
     doubleFormatter.localeSettings = this.localeSettings;
 
     const parsed = doubleFormatter.tryFromString(strValue);
-    if (!parsed.success) {
-      return {
-        success: false,
-        errorText: parsed.errorText.replace("float", "decimal"),
-      };
+    if (parsed.isErr()) {
+      return parsed.createOuter(parsed.error.replace("float", "decimal"));
     }
 
     return parsed;

@@ -3,7 +3,7 @@ import {
   DotNetNumberStyleId,
   DotNetNumberStyles,
   DotNetNumberStylesInfo,
-} from "../src/dotnet-number-style";
+} from "../src/code/dotnet-number-style";
 
 describe("DotNetNumberStylesInfo", () => {
   it("serializes known presets", () => {
@@ -17,10 +17,10 @@ describe("DotNetNumberStylesInfo", () => {
 
   it("parses known preset", () => {
     const parsed = DotNetNumberStylesInfo.tryFromXmlValue("Number");
-    expect(parsed.success).toBe(true);
-    if (parsed.success) {
-      expect(parsed.styles.has(DotNetNumberStyleId.AllowThousands)).toBe(true);
-      expect(parsed.styles.has(DotNetNumberStyleId.AllowDecimalPoint)).toBe(
+    expect(parsed.isOk()).toBe(true);
+    if (parsed.isOk()) {
+      expect(parsed.value.has(DotNetNumberStyleId.AllowThousands)).toBe(true);
+      expect(parsed.value.has(DotNetNumberStyleId.AllowDecimalPoint)).toBe(
         true,
       );
     }
@@ -30,13 +30,11 @@ describe("DotNetNumberStylesInfo", () => {
     const parsed = DotNetNumberStylesInfo.tryFromXmlValue(
       "AllowLeadingSign,AllowDecimalPoint",
     );
-    expect(parsed.success).toBe(true);
-    if (parsed.success) {
-      expect(parsed.styles.size).toBe(2);
-      expect(parsed.styles.has(DotNetNumberStyleId.AllowLeadingSign)).toBe(
-        true,
-      );
-      expect(parsed.styles.has(DotNetNumberStyleId.AllowDecimalPoint)).toBe(
+    expect(parsed.isOk()).toBe(true);
+    if (parsed.isOk()) {
+      expect(parsed.value.size).toBe(2);
+      expect(parsed.value.has(DotNetNumberStyleId.AllowLeadingSign)).toBe(true);
+      expect(parsed.value.has(DotNetNumberStyleId.AllowDecimalPoint)).toBe(
         true,
       );
     }

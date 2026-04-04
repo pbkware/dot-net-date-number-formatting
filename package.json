@@ -3,15 +3,31 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "exports": "./dist/index.js",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/types/public-api.d.ts",
+      "import": "./dist/code/index.js"
+    }
+  },
   "scripts": {
     "test": "vitest run",
     "test:ci": "vitest run --reporter=verbose",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "clean": "npx del-cli ./dist/* && npx del-cli ./lib/*",
+    "build": "tsc --build ./tsconfig.json",
+    "rollup": "npx api-extractor run --local --verbose",
+    "api": "npm run build && npm run rollup",
+    "dist": "npm run clean && npm run api",
+    "publish": "npm publish --access=public"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.57.7",
+    "del-cli": "^7.0.0",
     "typescript": "^5.9.2",
     "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "@pbkware/js-utils": "^0.8.6"
   }
 }

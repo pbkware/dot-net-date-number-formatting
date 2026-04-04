@@ -1,13 +1,10 @@
+import { Err, Ok, Result } from "@pbkware/js-utils";
 import {
   DotNetDateTimeStyleId,
   DotNetDateTimeStyleSet,
   DotNetDateTimeStyles,
 } from "./dotnet-datetime-style";
 import { FieldedTextLocaleSettings } from "./locale-settings";
-
-type ParseResult<T> =
-  | { success: true; value: T }
-  | { success: false; errorText: string };
 
 type ElementType =
   | "standard"
@@ -144,7 +141,7 @@ function formatStandard(token: string, date: Date, locale: string): string {
   }
 }
 
-function tokenizeCustom(format: string): ParseResult<Element[]> {
+function tokenizeCustom(format: string): Result<Element[]> {
   const elements: Element[] = [];
   let index = 0;
 
@@ -166,10 +163,7 @@ function tokenizeCustom(format: string): ParseResult<Element[]> {
         index += 1;
       }
       if (index >= format.length) {
-        return {
-          success: false,
-          errorText: "Unterminated quoted literal in format",
-        };
+        return new Err("Unterminated quoted literal in format");
       }
       index += 1;
       pushLiteral(literal);
@@ -179,10 +173,7 @@ function tokenizeCustom(format: string): ParseResult<Element[]> {
     if (current === "\\") {
       index += 1;
       if (index >= format.length) {
-        return {
-          success: false,
-          errorText: "Single-char literal escape at end of format",
-        };
+        return new Err("Single-char literal escape at end of format");
       }
       pushLiteral(format[index]);
       index += 1;
@@ -212,11 +203,7 @@ function tokenizeCustom(format: string): ParseResult<Element[]> {
         else if (runLength === 2) elements.push({ type: "day2" });
         else if (runLength === 3) elements.push({ type: "dayNameShort" });
         else if (runLength === 4) elements.push({ type: "dayNameLong" });
-        else
-          return {
-            success: false,
-            errorText: "Too many repeated d characters",
-          };
+        else return new Err("Too many repeated d characters");
         consume();
         break;
       case "M":
@@ -224,11 +211,7 @@ function tokenizeCustom(format: string): ParseResult<Element[]> {
         else if (runLength === 2) elements.push({ type: "month2" });
         else if (runLength === 3) elements.push({ type: "monthNameShort" });
         else if (runLength === 4) elements.push({ type: "monthNameLong" });
-        else
-          return {
-            success: false,
-            errorText: "Too many repeated M characters",
-          };
+        else return new Err("Too many repeated M characters");
         consume();
         break;
       case "y":
@@ -237,11 +220,7 @@ function tokenizeCustom(format: string): ParseResult<Element[]> {
         else if (runLength === 3) elements.push({ type: "year3" });
         else if (runLength === 4) elements.push({ type: "year4" });
         else if (runLength === 5) elements.push({ type: "year5" });
-        else
-          return {
-            success: false,
-            errorText: "Too many repeated y characters",
-          };
+        else return new Err("Too many repeated y characters");
         consume();
         break;
       case "h":
@@ -287,9 +266,10 @@ function tokenizeCustom(format: string): ParseResult<Element[]> {
     }
   }
 
-  return { success: true, value: elements };
+  return new Ok(elements);
 }
 
+/** @public */
 export class DotNetDateTimeFormatter {
   static readonly unsupportedStyles = new Set<DotNetDateTimeStyleId>([
     DotNetDateTimeStyleId.AdjustToUniversal,
@@ -307,9 +287,9 @@ export class DotNetDateTimeFormatter {
 
   parseErrorText = "";
 
-  trySetFormat(value: string): ParseResult<void> {
+  trySetFormat(value: string): Result<void> {
     if (value.length === 0) {
-      return { success: false, errorText: "Format text cannot be empty" };
+      return new Err("Format text cannot be empty");
     }
 
     this.format = value;
@@ -317,16 +297,16 @@ export class DotNetDateTimeFormatter {
 
     if (this.formatIsStandard) {
       this.elements = [{ type: "standard", text: value }];
-      return { success: true, value: undefined };
+      return new Ok(undefined);
     }
 
     const parsed = tokenizeCustom(value);
-    if (!parsed.success) {
-      return parsed;
+    if (parsed.isErr()) {
+      return parsed.createType<void>();
     }
 
     this.elements = parsed.value;
-    return { success: true, value: undefined };
+    return new Ok(undefined);
   }
 
   toString(value: Date): string {
@@ -440,7 +420,7 @@ export class DotNetDateTimeFormatter {
     return result;
   }
 
-  tryFromString(strValue: string): ParseResult<Date> {
+  tryFromString(strValue: string): Result<Date> {
     let parseText = strValue;
 
     if (
@@ -455,15 +435,15 @@ export class DotNetDateTimeFormatter {
     }
 
     if (parseText.length === 0) {
-      return { success: false, errorText: "DateTime string is empty" };
+      return new Err("DateTime string is empty");
     }
 
     if (this.formatIsStandard) {
       const parsed = new Date(parseText);
       if (Number.isNaN(parsed.getTime())) {
-        return { success: false, errorText: "Invalid Date string" };
+        return new Err("Invalid Date string");
       }
-      return { success: true, value: parsed };
+      return new Ok(parsed);
     }
 
     const regexParts: string[] = ["^"];
@@ -617,10 +597,7 @@ export class DotNetDateTimeFormatter {
     const re = new RegExp(regexParts.join(""));
     const match = re.exec(parseText);
     if (match === null) {
-      return {
-        success: false,
-        errorText: "DateTime string does not match all Format specifiers",
-      };
+      return new Err("DateTime string does not match all Format specifiers");
     }
 
     const state = { y: 1, m: 1, d: 1, hh: 0, mm: 0, ss: 0, ms: 0, ampm: 0 };
@@ -645,9 +622,9 @@ export class DotNetDateTimeFormatter {
       state.ms,
     );
     if (Number.isNaN(value.getTime())) {
-      return { success: false, errorText: "Year, Month or Day is invalid" };
+      return new Err("Year, Month or Day is invalid");
     }
 
-    return { success: true, value };
+    return new Ok(value);
   }
 }

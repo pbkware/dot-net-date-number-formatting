@@ -1,4 +1,4 @@
-export type ParseResult<T> = { success: true; value: T } | { success: false };
+import { Err, Ok, Result } from "@pbkware/js-utils";
 
 const INVARIANT_LOCALE = "en-US";
 
@@ -57,6 +57,7 @@ function getSeparators(locale: string): {
   };
 }
 
+/** @public */
 export class FieldedTextLocaleSettings {
   static readonly invariant = FieldedTextLocaleSettings.createInvariant();
   static readonly current = new FieldedTextLocaleSettings(undefined);
@@ -139,62 +140,62 @@ export class FieldedTextLocaleSettings {
     return value ? "True" : "False";
   }
 
-  tryStrToBool(value: string): ParseResult<boolean> {
+  tryStrToBool(value: string): Result<boolean> {
     const normalized = value.trim().toLowerCase();
     if (["true", "1", "yes"].includes(normalized)) {
-      return { success: true, value: true };
+      return new Ok(true);
     }
     if (["false", "0", "no"].includes(normalized)) {
-      return { success: true, value: false };
+      return new Ok(false);
     }
-    return { success: false };
+    return new Err("Invalid boolean string");
   }
 
-  tryStrToInt(value: string): ParseResult<number> {
+  tryStrToInt(value: string): Result<number> {
     if (!/^[+-]?\d+$/.test(value.trim())) {
-      return { success: false };
+      return new Err("Invalid integer string");
     }
     const parsed = Number.parseInt(value, 10);
     return Number.isNaN(parsed)
-      ? { success: false }
-      : { success: true, value: parsed };
+      ? new Err("Invalid integer string")
+      : new Ok(parsed);
   }
 
-  tryStrToInt64(value: string): ParseResult<bigint> {
+  tryStrToInt64(value: string): Result<bigint> {
     if (!/^[+-]?\d+$/.test(value.trim())) {
-      return { success: false };
+      return new Err("Invalid integer string");
     }
     try {
-      return { success: true, value: BigInt(value.trim()) };
+      return new Ok(BigInt(value.trim()));
     } catch {
-      return { success: false };
+      return new Err("Invalid integer string");
     }
   }
 
-  tryStrToFloat(value: string): ParseResult<number> {
+  tryStrToFloat(value: string): Result<number> {
     const normalized = value
       .trim()
       .replaceAll(this.thousandSeparator, "")
       .replace(this.decimalSeparator, ".");
     const parsed = Number.parseFloat(normalized);
     return Number.isNaN(parsed)
-      ? { success: false }
-      : { success: true, value: parsed };
+      ? new Err("Invalid float string")
+      : new Ok(parsed);
   }
 
-  tryStrToCurr(value: string): ParseResult<number> {
+  tryStrToCurr(value: string): Result<number> {
     const withoutCurrency = value.replaceAll(this.currencyString, "");
     return this.tryStrToFloat(withoutCurrency);
   }
 
-  tryStrToDate(value: string): ParseResult<Date> {
+  tryStrToDate(value: string): Result<Date> {
     const parsed = parseDate(value.trim());
     return parsed === undefined
-      ? { success: false }
-      : { success: true, value: parsed };
+      ? new Err("Invalid date string")
+      : new Ok(parsed);
   }
 
-  tryStrToDateTime(value: string): ParseResult<Date> {
+  tryStrToDateTime(value: string): Result<Date> {
     return this.tryStrToDate(value);
   }
 }
