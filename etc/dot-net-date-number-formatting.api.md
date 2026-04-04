@@ -78,7 +78,7 @@ export class DotNetDecimalFormatter extends DotNetNumberFormatter {
 }
 
 // @public (undocumented)
-export class DotNetDoubleFormatter extends DotNetNumberFormatter {
+export class DotNetFloatFormatter extends DotNetNumberFormatter {
     // (undocumented)
     toString(value: number): string;
     // (undocumented)
@@ -96,7 +96,9 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
 // @public (undocumented)
 export class DotNetNumberFormatter {
     // (undocumented)
-    format: string;
+    protected format: string;
+    // (undocumented)
+    protected formatNumber(value: number | bigint, allowDecimal?: boolean): string;
     // (undocumented)
     hasDecimalChar(value: string): boolean;
     // (undocumented)
@@ -115,6 +117,8 @@ export class DotNetNumberFormatter {
     protected trimTrailingPadZeros(value: string): string;
     // (undocumented)
     static tryHexToInt64(hex: string): Result<bigint>;
+    // (undocumented)
+    trySetFormat(value: string): Result<void>;
     // (undocumented)
     protected unstyleNumberString(value: string): Result<{
         unstyled: string;
