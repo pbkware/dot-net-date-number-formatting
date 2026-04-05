@@ -70,6 +70,10 @@ export class FieldedTextLocaleSettings {
   readonly dateSeparator: string;
   readonly timeSeparator: string;
 
+  readonly defaultFloat: Intl.NumberFormat;
+  readonly defaultDecimal: Intl.NumberFormat;
+  readonly defaultCurrency: Intl.NumberFormat;
+
   constructor(localeName?: string) {
     this.name = localeName ?? Intl.DateTimeFormat().resolvedOptions().locale;
     this.id = this.name;
@@ -79,6 +83,20 @@ export class FieldedTextLocaleSettings {
     this.currencyString = separators.currencySymbol;
     this.dateSeparator = separators.dateSeparator;
     this.timeSeparator = separators.timeSeparator;
+
+    this.defaultFloat = new Intl.NumberFormat(this.name, {
+      useGrouping: false,
+      maximumFractionDigits: 20,
+    });
+    this.defaultCurrency = new Intl.NumberFormat(this.name, {
+      style: "currency",
+      currency: "USD",
+    });
+    this.defaultDecimal = new Intl.NumberFormat(this.name, {
+      useGrouping: false,
+      minimumFractionDigits: 18,
+      maximumFractionDigits: 18,
+    });
   }
 
   static create(localeName: string): FieldedTextLocaleSettings {

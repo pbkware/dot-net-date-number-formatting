@@ -210,6 +210,12 @@ export class FieldedTextLocaleSettings {
     // (undocumented)
     readonly decimalSeparator: string;
     // (undocumented)
+    readonly defaultCurrency: Intl.NumberFormat;
+    // (undocumented)
+    readonly defaultDecimal: Intl.NumberFormat;
+    // (undocumented)
+    readonly defaultFloat: Intl.NumberFormat;
+    // (undocumented)
     floatToStr(value: number): string;
     // (undocumented)
     readonly id: string;

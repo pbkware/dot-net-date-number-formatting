@@ -813,7 +813,7 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
 export class DotNetFloatFormatter extends DotNetNumberFormatter {
   toString(value: number): string {
     if (this.format === "") {
-      return this.localeSettings.floatToStr(value);
+      return this.localeSettings.defaultFloat.format(value);
     }
     return this.formatNumber(value, true);
   }
@@ -864,7 +864,7 @@ export class DotNetDecimalFormatter extends DotNetNumberFormatter {
   toString(value: number): string {
     if (this.format === "") {
       return this.trimTrailingPadZeros(
-        this.localeSettings.currToStrF(value, 18),
+        this.localeSettings.defaultDecimal.format(value),
       );
     }
     return this.formatNumber(value, true);
