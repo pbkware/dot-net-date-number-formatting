@@ -509,3 +509,328 @@ describe("Format String Errors", () => {
     expect(result.isErr()).toBe(true);
   });
 });
+
+// Issue 1: Culture-Aware Character Case Conversion
+describe("FieldedTextLocaleSettings - Culture-Aware Char Conversion", () => {
+  describe("English (en-US) locale", () => {
+    const settings = FieldedTextLocaleSettings.create("en-US");
+
+    it("converts lowercase to uppercase", () => {
+      expect(settings.toUpperChar("a")).toBe("A");
+      expect(settings.toUpperChar("z")).toBe("Z");
+      expect(settings.toUpperChar("i")).toBe("I");
+    });
+
+    it("converts uppercase to lowercase", () => {
+      expect(settings.toLowerChar("A")).toBe("a");
+      expect(settings.toLowerChar("Z")).toBe("z");
+      expect(settings.toLowerChar("I")).toBe("i");
+    });
+
+    it("leaves already uppercase characters unchanged", () => {
+      expect(settings.toUpperChar("A")).toBe("A");
+      expect(settings.toUpperChar("Z")).toBe("Z");
+    });
+
+    it("leaves already lowercase characters unchanged", () => {
+      expect(settings.toLowerChar("a")).toBe("a");
+      expect(settings.toLowerChar("z")).toBe("z");
+    });
+  });
+
+  describe("Turkish (tr-TR) locale - special i/I rules", () => {
+    const settings = FieldedTextLocaleSettings.create("tr-TR");
+
+    it("converts Turkish lowercase i to dotted uppercase İ", () => {
+      expect(settings.toUpperChar("i")).toBe("İ");
+    });
+
+    it("converts Turkish lowercase ı to dotless uppercase I", () => {
+      expect(settings.toUpperChar("ı")).toBe("I");
+    });
+
+    it("converts Turkish uppercase I to dotless lowercase ı", () => {
+      expect(settings.toLowerChar("I")).toBe("ı");
+    });
+
+    it("converts Turkish uppercase İ to dotted lowercase i", () => {
+      expect(settings.toLowerChar("İ")).toBe("i");
+    });
+
+    it("handles other Turkish letters like standard locales", () => {
+      expect(settings.toUpperChar("a")).toBe("A");
+      expect(settings.toLowerChar("A")).toBe("a");
+    });
+  });
+
+  describe("Invariant locale", () => {
+    const settings = FieldedTextLocaleSettings.createInvariant();
+
+    it("converts to uppercase", () => {
+      expect(settings.toUpperChar("a")).toBe("A");
+      expect(settings.toUpperChar("i")).toBe("I");
+    });
+
+    it("converts to lowercase", () => {
+      expect(settings.toLowerChar("A")).toBe("a");
+      expect(settings.toLowerChar("I")).toBe("i");
+    });
+
+    it("uses standard rules (not Turkish)", () => {
+      // Invariant should not use Turkish special rules
+      expect(settings.toUpperChar("i")).toBe("I");
+      expect(settings.toLowerChar("I")).toBe("i");
+    });
+  });
+});
+
+// Issue 2: Scientific Notation Parsing
+describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
+  const formatter = new DotNetFloatFormatter();
+  formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+  formatter.styles = new Set([
+    DotNetNumberStyleId.AllowLeadingSign,
+    DotNetNumberStyleId.AllowDecimalPoint,
+    DotNetNumberStyleId.AllowLeadingWhite,
+    DotNetNumberStyleId.AllowTrailingWhite,
+    DotNetNumberStyleId.AllowExponent,
+  ]);
+
+  describe("Lowercase e notation", () => {
+    it("parses lowercase e with positive exponent", () => {
+      const result = formatter.tryFromString("1.23e5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+
+    it("parses lowercase e with negative exponent", () => {
+      const result = formatter.tryFromString("1e-3");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBeCloseTo(0.001);
+      }
+    });
+
+    it("parses lowercase e with implicit positive exponent", () => {
+      const result = formatter.tryFromString("2.5e2");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(250);
+      }
+    });
+  });
+
+  describe("Uppercase E notation", () => {
+    it("parses uppercase E with positive exponent", () => {
+      const result = formatter.tryFromString("1.23E5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+
+    it("parses uppercase E with negative exponent", () => {
+      const result = formatter.tryFromString("1E-3");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBeCloseTo(0.001);
+      }
+    });
+
+    it("parses uppercase E with implicit positive exponent", () => {
+      const result = formatter.tryFromString("2.5E2");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(250);
+      }
+    });
+  });
+
+  describe("Explicit +/- sign on exponent", () => {
+    it("parses with explicit + sign", () => {
+      const result = formatter.tryFromString("1.23e+5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+
+    it("parses uppercase E with explicit + sign", () => {
+      const result = formatter.tryFromString("1.23E+5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+
+    it("parses with explicit - sign", () => {
+      const result = formatter.tryFromString("1.5e-2");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBeCloseTo(0.015);
+      }
+    });
+  });
+
+  describe("Scientific notation with negative mantissa", () => {
+    it("parses negative mantissa", () => {
+      const result = formatter.tryFromString("-1.23e5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(-123000);
+      }
+    });
+
+    it("parses negative mantissa with positive exponent", () => {
+      const result = formatter.tryFromString("-2.5E2");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(-250);
+      }
+    });
+
+    it("parses negative mantissa with negative exponent", () => {
+      const result = formatter.tryFromString("-1e-3");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBeCloseTo(-0.001);
+      }
+    });
+  });
+
+  describe("Round-trip exponential format", () => {
+    it("formats and parses exponential notation", () => {
+      formatter.trySetFormat("E");
+      const text = formatter.toString(123000);
+      const parsed = formatter.tryFromString(text);
+      expect(parsed.isOk()).toBe(true);
+      if (parsed.isOk()) {
+        expect(parsed.value).toBeCloseTo(123000);
+      }
+    });
+
+    it("formats and parses lowercase exponential", () => {
+      formatter.trySetFormat("e");
+      const text = formatter.toString(456000);
+      const parsed = formatter.tryFromString(text);
+      expect(parsed.isOk()).toBe(true);
+      if (parsed.isOk()) {
+        expect(parsed.value).toBeCloseTo(456000);
+      }
+    });
+
+    it("parses scientific notation regardless of output format", () => {
+      formatter.trySetFormat("F2"); // Fixed-point format for output
+      const result = formatter.tryFromString("1.23e5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+  });
+
+  describe("Scientific notation without explicit decimal", () => {
+    it("parses integer mantissa with exponent", () => {
+      const result = formatter.tryFromString("1e5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(100000);
+      }
+    });
+
+    it("parses integer mantissa with uppercase E", () => {
+      const result = formatter.tryFromString("5E2");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(500);
+      }
+    });
+
+    it("parses integer mantissa with negative exponent", () => {
+      const result = formatter.tryFromString("1e-1");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBeCloseTo(0.1);
+      }
+    });
+  });
+
+  describe("Edge cases", () => {
+    it("parses zero in exponential notation", () => {
+      const result = formatter.tryFromString("0e5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(0);
+      }
+    });
+
+    it("parses very large exponents", () => {
+      const result = formatter.tryFromString("1e100");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(1e100);
+      }
+    });
+
+    it("parses very small exponents", () => {
+      const result = formatter.tryFromString("1e-100");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBeCloseTo(1e-100);
+      }
+    });
+
+    it("parses with whitespace", () => {
+      const result = formatter.tryFromString("  1.23e5  ");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+  });
+
+  describe("Culture-specific decimal separator with scientific notation", () => {
+    it("handles culture decimal separator in mantissa", () => {
+      const frSettings = FieldedTextLocaleSettings.create("fr-FR");
+      const frFormatter = new DotNetFloatFormatter();
+      frFormatter.localeSettings = frSettings;
+      frFormatter.styles = new Set([
+        DotNetNumberStyleId.AllowLeadingSign,
+        DotNetNumberStyleId.AllowDecimalPoint,
+        DotNetNumberStyleId.AllowLeadingWhite,
+        DotNetNumberStyleId.AllowTrailingWhite,
+        DotNetNumberStyleId.AllowExponent,
+      ]);
+
+      // French uses comma as decimal separator - should parse "1,23e5"
+      const result = frFormatter.tryFromString("1,23e5");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(123000);
+      }
+    });
+
+    it("preserves standard exponent notation", () => {
+      const deSettings = FieldedTextLocaleSettings.create("de-DE");
+      const deFormatter = new DotNetFloatFormatter();
+      deFormatter.localeSettings = deSettings;
+      deFormatter.styles = new Set([
+        DotNetNumberStyleId.AllowLeadingSign,
+        DotNetNumberStyleId.AllowDecimalPoint,
+        DotNetNumberStyleId.AllowLeadingWhite,
+        DotNetNumberStyleId.AllowTrailingWhite,
+        DotNetNumberStyleId.AllowExponent,
+      ]);
+
+      // German uses comma as decimal separator
+      // Scientific notation exponent should always use 'e' or 'E', not translated
+      const result = deFormatter.tryFromString("2,5e2");
+      expect(result.isOk()).toBe(true);
+      if (result.isOk()) {
+        expect(result.value).toBe(250);
+      }
+    });
+  });
+});

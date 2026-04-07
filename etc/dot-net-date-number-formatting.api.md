@@ -229,6 +229,8 @@ export class FieldedTextLocaleSettings {
     readonly thousandSeparator: string;
     // (undocumented)
     readonly timeSeparator: string;
+    toLowerChar(char: string): string;
+    toUpperChar(char: string): string;
     // (undocumented)
     tryStrToBool(value: string): Result<boolean>;
     // (undocumented)

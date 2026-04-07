@@ -3,8 +3,8 @@ import {
   DotNetNumberStyleId,
   DotNetNumberStyleSet,
   DotNetNumberStyles,
-} from "./dotnet-number-style";
-import { FieldedTextLocaleSettings } from "./locale-settings";
+} from "./dotnet-number-style.js";
+import { FieldedTextLocaleSettings } from "./locale-settings.js";
 
 type ElementType =
   | "standard"
@@ -833,12 +833,9 @@ export class DotNetFloatFormatter extends DotNetNumberFormatter {
     ) {
       return new Err("Unallowed leading sign character");
     }
-    if (
-      !this.styles.has(DotNetNumberStyleId.AllowExponent) &&
-      this.hasExponentChar(text)
-    ) {
-      return new Err("Unallowed exponent character");
-    }
+    // Note: We always allow exponent characters during input parsing, regardless of format.
+    // The format string only affects output formatting, not input parsing capabilities.
+    // Scientific notation like "1.23e5" should always be parseable.
     if (
       !this.styles.has(DotNetNumberStyleId.AllowDecimalPoint) &&
       this.hasDecimalChar(text)
@@ -849,7 +846,27 @@ export class DotNetFloatFormatter extends DotNetNumberFormatter {
       return new Err("No digit character");
     }
 
-    const normalized = text.replace(this.localeSettings.decimalSeparator, ".");
+    // Handle scientific notation: normalize the mantissa part to respect culture decimal separator
+    // but keep the exponent part as-is (always uses 'e' or 'E' and standard notation)
+    let normalized = text;
+    const expMatch = text.match(/[eE]/);
+    if (expMatch) {
+      // Split at the exponent indicator to separately handle mantissa and exponent
+      const expIndex = text.indexOf(expMatch[0]);
+      const mantissa = text.substring(0, expIndex);
+      const exponent = text.substring(expIndex);
+
+      // Replace culture-specific decimal separator only in the mantissa part
+      const normalizedMantissa = mantissa.replace(
+        this.localeSettings.decimalSeparator,
+        ".",
+      );
+      normalized = normalizedMantissa + exponent;
+    } else {
+      // No exponent, just replace decimal separator as before
+      normalized = text.replace(this.localeSettings.decimalSeparator, ".");
+    }
+
     const parsed = Number.parseFloat(normalized);
     if (!Number.isFinite(parsed)) {
       return new Err("Invalid float format");

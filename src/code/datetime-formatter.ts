@@ -3,8 +3,8 @@ import {
   DotNetDateTimeStyleId,
   DotNetDateTimeStyleSet,
   DotNetDateTimeStyles,
-} from "./dotnet-datetime-style";
-import { FieldedTextLocaleSettings } from "./locale-settings";
+} from "./dotnet-datetime-style.js";
+import { FieldedTextLocaleSettings } from "./locale-settings.js";
 
 type ElementType =
   | "standard"

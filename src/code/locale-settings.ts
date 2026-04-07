@@ -216,4 +216,64 @@ export class FieldedTextLocaleSettings {
   tryStrToDateTime(value: string): Result<Date> {
     return this.tryStrToDate(value);
   }
+
+  /**
+   * Convert a single character to uppercase using culture-specific rules.
+   * Handles special cases like Turkish 'i' → 'İ' vs 'I'.
+   * @param char - The character to convert to uppercase
+   * @returns The uppercased character
+   */
+  toUpperChar(char: string): string {
+    if (char.length === 0) {
+      return char;
+    }
+
+    // For single character conversion, use Intl.Collator with locale-specific rules
+    // Most locales follow standard Unicode case mapping
+    const single = char[0];
+
+    // Turkish locale has special rules for 'i' and 'ı'
+    if (this.name.startsWith("tr")) {
+      // Turkish lowercase: i (U+0069) -> Turkish uppercase: İ (U+0130)
+      // Turkish lowercase: ı (U+0131) -> Turkish uppercase: I (U+0049)
+      if (single === "i") {
+        return "İ";
+      }
+      if (single === "ı") {
+        return "I";
+      }
+    }
+
+    // For other locales, use standard toUpperCase
+    return single.toUpperCase();
+  }
+
+  /**
+   * Convert a single character to lowercase using culture-specific rules.
+   * Handles special cases like Turkish 'I' → 'ı' vs Turkish 'İ' → 'i'.
+   * @param char - The character to convert to lowercase
+   * @returns The lowercased character
+   */
+  toLowerChar(char: string): string {
+    if (char.length === 0) {
+      return char;
+    }
+
+    const single = char[0];
+
+    // Turkish locale has special rules for 'I' and 'İ'
+    if (this.name.startsWith("tr")) {
+      // Turkish uppercase: I (U+0049) -> Turkish lowercase: ı (U+0131)
+      // Turkish uppercase: İ (U+0130) -> Turkish lowercase: i (U+0069)
+      if (single === "I") {
+        return "ı";
+      }
+      if (single === "İ") {
+        return "i";
+      }
+    }
+
+    // For other locales, use standard toLowerCase
+    return single.toLowerCase();
+  }
 }
