@@ -99,8 +99,6 @@ export class DotNetLocaleSettings {
     // (undocumented)
     boolToStr(value: boolean): string;
     // (undocumented)
-    cardinalToStr(value: number): string;
-    // (undocumented)
     static create(localeName: string): DotNetLocaleSettings;
     // (undocumented)
     static createInvariant(): DotNetLocaleSettings;
@@ -109,15 +107,9 @@ export class DotNetLocaleSettings {
     // (undocumented)
     static readonly current: DotNetLocaleSettings;
     // (undocumented)
-    currToStr(value: number): string;
-    // (undocumented)
-    currToStrF(value: number, digits: number): string;
-    // (undocumented)
     readonly dateSeparator: string;
     // (undocumented)
-    dateTimeToStr(value: Date): string;
-    // (undocumented)
-    dateToStr(value: Date): string;
+    dateToStr(value: Date, options?: Intl.DateTimeFormatOptions): string;
     // (undocumented)
     readonly decimalSeparator: string;
     // (undocumented)
@@ -127,15 +119,13 @@ export class DotNetLocaleSettings {
     // (undocumented)
     readonly defaultFloat: Intl.NumberFormat;
     // (undocumented)
-    floatToStr(value: number): string;
-    // (undocumented)
     readonly id: string;
-    // (undocumented)
-    intToStr(value: number | bigint): string;
     // (undocumented)
     static readonly invariant: DotNetLocaleSettings;
     // (undocumented)
     readonly name: string;
+    // (undocumented)
+    numberToStr(value: number | bigint, options?: Intl.NumberFormatOptions): string;
     // (undocumented)
     readonly thousandSeparator: string;
     // (undocumented)
@@ -143,21 +133,15 @@ export class DotNetLocaleSettings {
     toLowerChar(char: string): string;
     toUpperChar(char: string): string;
     // (undocumented)
-    tryStrToBool(value: string): Result<boolean>;
+    tryStrToBigInt(value: string): Result<bigint>;
     // (undocumented)
-    tryStrToCurr(value: string): Result<number>;
+    tryStrToBool(value: string): Result<boolean>;
     // (undocumented)
     tryStrToDate(value: string): Result<Date>;
     // (undocumented)
-    tryStrToDateTime(value: string): Result<Date>;
-    // (undocumented)
-    tryStrToFloat(value: string): Result<number>;
-    // (undocumented)
     tryStrToInt(value: string): Result<number>;
     // (undocumented)
-    tryStrToInt64(value: string): Result<bigint>;
-    // (undocumented)
-    uint64ToStr(value: bigint): string;
+    tryStrToNumber(value: string): Result<number>;
 }
 
 // @public (undocumented)

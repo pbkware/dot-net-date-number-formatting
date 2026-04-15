@@ -107,55 +107,19 @@ export class DotNetLocaleSettings {
     return new DotNetLocaleSettings(INVARIANT_LOCALE);
   }
 
-  intToStr(value: number | bigint): string {
-    return value.toString();
+  numberToStr(
+    value: number | bigint,
+    options?: Intl.NumberFormatOptions,
+  ): string {
+    return new Intl.NumberFormat(this.name, options).format(value);
   }
 
-  cardinalToStr(value: number): string {
-    return Math.trunc(value >>> 0).toString();
-  }
-
-  uint64ToStr(value: bigint): string {
-    return value.toString();
-  }
-
-  floatToStr(value: number): string {
-    return new Intl.NumberFormat(this.name, {
-      useGrouping: false,
-      maximumFractionDigits: 20,
-    }).format(value);
-  }
-
-  currToStr(value: number): string {
-    return new Intl.NumberFormat(this.name, {
-      style: "currency",
-      currency: "USD",
-    }).format(value);
-  }
-
-  currToStrF(value: number, digits: number): string {
-    return new Intl.NumberFormat(this.name, {
-      useGrouping: false,
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    }).format(value);
-  }
-
-  dateToStr(value: Date): string {
-    return new Intl.DateTimeFormat(this.name, { dateStyle: "short" }).format(
-      value,
-    );
-  }
-
-  dateTimeToStr(value: Date): string {
-    return new Intl.DateTimeFormat(this.name, {
-      dateStyle: "short",
-      timeStyle: "medium",
-    }).format(value);
+  dateToStr(value: Date, options?: Intl.DateTimeFormatOptions): string {
+    return new Intl.DateTimeFormat(this.name, options).format(value);
   }
 
   boolToStr(value: boolean): string {
-    return value ? "True" : "False";
+    return value ? "true" : "false";
   }
 
   tryStrToBool(value: string): Result<boolean> {
@@ -179,7 +143,7 @@ export class DotNetLocaleSettings {
       : new Ok(parsed);
   }
 
-  tryStrToInt64(value: string): Result<bigint> {
+  tryStrToBigInt(value: string): Result<bigint> {
     if (!/^[+-]?\d+$/.test(value.trim())) {
       return new Err("Invalid integer string");
     }
@@ -190,9 +154,10 @@ export class DotNetLocaleSettings {
     }
   }
 
-  tryStrToFloat(value: string): Result<number> {
+  tryStrToNumber(value: string): Result<number> {
     const normalized = value
       .trim()
+      .replaceAll(this.currencyString, "")
       .replaceAll(this.thousandSeparator, "")
       .replace(this.decimalSeparator, ".");
     const parsed = Number.parseFloat(normalized);
@@ -201,20 +166,11 @@ export class DotNetLocaleSettings {
       : new Ok(parsed);
   }
 
-  tryStrToCurr(value: string): Result<number> {
-    const withoutCurrency = value.replaceAll(this.currencyString, "");
-    return this.tryStrToFloat(withoutCurrency);
-  }
-
   tryStrToDate(value: string): Result<Date> {
     const parsed = parseDate(value.trim());
     return parsed === undefined
       ? new Err("Invalid date string")
       : new Ok(parsed);
-  }
-
-  tryStrToDateTime(value: string): Result<Date> {
-    return this.tryStrToDate(value);
   }
 
   /**
