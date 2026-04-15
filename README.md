@@ -130,11 +130,11 @@ npm install dot-net-date-number-formatting
 ### DateTime Formatting
 
 ```typescript
-import { DotNetDateTimeFormatter, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 // Create formatter
 const formatter = new DotNetDateTimeFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Standard format strings
 formatter.trySetFormat('d');        // Short date
@@ -154,11 +154,11 @@ console.log(formatter.toString(new Date(2024, 6, 5, 14, 30, 45)));  // "14:30:45
 ### Numeric Formatting
 
 ```typescript
-import { DotNetFloatFormatter, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 // Create formatter
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Standard format strings
 formatter.trySetFormat('C');        // Currency
@@ -187,10 +187,10 @@ console.log(formatter.toString(-1234.56));  // "($1,234.56)"
 ### Parsing Numbers with Styles
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Configure parsing styles
 formatter.styles = new Set([
@@ -221,17 +221,17 @@ if (currencyResult.isOk()) {
 
 ### Core Classes
 
-#### `FieldedTextLocaleSettings`
+#### `DotNetLocaleSettings`
 
 Represents locale-specific formatting settings including decimal separators, thousand separators, currency symbols, and date/time separators.
 
 **Static Methods:**
-- `createInvariant(): FieldedTextLocaleSettings` - Creates settings for invariant culture (en-US)
-- `create(localeName: string): FieldedTextLocaleSettings` - Creates settings for specific locale
+- `createInvariant(): DotNetLocaleSettings` - Creates settings for invariant culture (en-US)
+- `create(localeName: string): DotNetLocaleSettings` - Creates settings for specific locale
 
 **Static Properties:**
-- `current: FieldedTextLocaleSettings` - Default settings for current system locale
-- `invariant: FieldedTextLocaleSettings` - Invariant culture settings
+- `current: DotNetLocaleSettings` - Default settings for current system locale
+- `invariant: DotNetLocaleSettings` - Invariant culture settings
 
 **Properties:**
 - `name: string` - Locale name
@@ -244,15 +244,15 @@ Represents locale-specific formatting settings including decimal separators, tho
 **Example:**
 ```typescript
 // Use system locale
-const systemSettings = FieldedTextLocaleSettings.current;
+const systemSettings = DotNetLocaleSettings.current;
 
 // Use specific locale
-const frenchSettings = FieldedTextLocaleSettings.create('fr-FR');
+const frenchSettings = DotNetLocaleSettings.create('fr-FR');
 console.log(frenchSettings.decimalSeparator);  // ","
 console.log(frenchSettings.thousandSeparator);  // " " (space)
 
 // Use invariant culture (en-US style, consistent across systems)
-const invariantSettings = FieldedTextLocaleSettings.createInvariant();
+const invariantSettings = DotNetLocaleSettings.createInvariant();
 console.log(invariantSettings.decimalSeparator);  // "."
 console.log(invariantSettings.thousandSeparator);  // ","
 ```
@@ -266,7 +266,7 @@ console.log(invariantSettings.thousandSeparator);  // ","
 Formats and parses dates using .NET-compatible format strings.
 
 **Properties:**
-- `localeSettings: FieldedTextLocaleSettings` - Locale settings for formatting
+- `localeSettings: DotNetLocaleSettings` - Locale settings for formatting
 - `styles: DotNetDateTimeStyleSet` - Parsing styles (for future parsing implementation)
 - `parseErrorText: string` - Error message from last failed operation
 
@@ -312,7 +312,7 @@ Formats a date using the current format string.
 **Example:**
 ```typescript
 const formatter = new DotNetDateTimeFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 formatter.trySetFormat('yyyy-MM-dd HH:mm:ss');
 
 const date = new Date(2024, 6, 5, 14, 30, 45);
@@ -361,7 +361,7 @@ if (result.isOk()) {
 **Example:**
 ```typescript
 const formatter = new DotNetDateTimeFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 const date = new Date(2024, 6, 5, 14, 30, 45, 120);
 
 formatter.trySetFormat('d');
@@ -412,7 +412,7 @@ console.log(formatter.toString(date));  // "2024-07-05T14:30:45.120Z"
 **Example:**
 ```typescript
 const formatter = new DotNetDateTimeFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 const date = new Date(2024, 6, 5, 14, 3, 9, 120);
 
 formatter.trySetFormat('yyyy-MM-dd');
@@ -444,7 +444,7 @@ Base class for number formatting (typically use derived classes).
 Formats and parses integer values (bigint).
 
 **Properties:**
-- `localeSettings: FieldedTextLocaleSettings` - Locale settings
+- `localeSettings: DotNetLocaleSettings` - Locale settings
 - `styles: DotNetNumberStyleSet` - Parsing styles
 - `parseErrorText: string` - Error message from last failed operation
 
@@ -456,7 +456,7 @@ Formats and parses integer values (bigint).
 **Example:**
 ```typescript
 const formatter = new DotNetIntegerFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Formatting
 formatter.trySetFormat('D8');
@@ -478,7 +478,7 @@ if (result.isOk()) {
 Formats and parses floating-point values (number).
 
 **Properties:**
-- `localeSettings: FieldedTextLocaleSettings` - Locale settings
+- `localeSettings: DotNetLocaleSettings` - Locale settings
 - `styles: DotNetNumberStyleSet` - Parsing styles
 - `parseErrorText: string` - Error message from last failed operation
 
@@ -490,7 +490,7 @@ Formats and parses floating-point values (number).
 **Example:**
 ```typescript
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Standard formats
 formatter.trySetFormat('C2');
@@ -539,7 +539,7 @@ Where `{n}` is an optional precision specifier (number of decimal places or digi
 **Example:**
 ```typescript
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 formatter.trySetFormat('C');     // Currency, default precision
 console.log(formatter.toString(1234.56));  // "$1,234.56"
@@ -582,7 +582,7 @@ console.log(formatter.toString(0.1234));  // "12%"
 **Example:**
 ```typescript
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Zero and digit placeholders
 formatter.trySetFormat('0000.00');
@@ -643,10 +643,10 @@ Predefined number style combinations for common parsing scenarios.
 
 **Example:**
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyles, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Use predefined style
 formatter.styles = DotNetNumberStyles.number;
@@ -680,10 +680,10 @@ Individual style flags that can be combined.
 
 **Example:**
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Custom style combination
 formatter.styles = new Set([
@@ -719,23 +719,23 @@ if (hexResult.isOk()) {
 ### Multi-Locale Formatting
 
 ```typescript
-import { DotNetFloatFormatter, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 const value = 1234.56;
 
 // US English formatting
-formatter.localeSettings = FieldedTextLocaleSettings.create('en-US');
+formatter.localeSettings = DotNetLocaleSettings.create('en-US');
 formatter.trySetFormat('C2');
 console.log(formatter.toString(value));  // "$1,234.56"
 
 // French formatting
-formatter.localeSettings = FieldedTextLocaleSettings.create('fr-FR');
+formatter.localeSettings = DotNetLocaleSettings.create('fr-FR');
 formatter.trySetFormat('C2');
 console.log(formatter.toString(value));  // "1 234,56 €"
 
 // German formatting
-formatter.localeSettings = FieldedTextLocaleSettings.create('de-DE');
+formatter.localeSettings = DotNetLocaleSettings.create('de-DE');
 formatter.trySetFormat('N2');
 console.log(formatter.toString(value));  // "1.234,56"
 ```
@@ -743,10 +743,10 @@ console.log(formatter.toString(value));  // "1.234,56"
 ### Complex Date Formatting
 
 ```typescript
-import { DotNetDateTimeFormatter, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 const formatter = new DotNetDateTimeFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 const date = new Date(2024, 6, 5, 14, 30, 45, 123);
 
@@ -770,10 +770,10 @@ console.log(formatter.toString(date));  // "Week W of 2024"
 ### Flexible Number Parsing
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, FieldedTextLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
-formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
 // Configure flexible parsing
 formatter.styles = new Set([
@@ -839,7 +839,7 @@ import {
   DotNetFloatFormatter,
   DotNetIntegerFormatter,
   DotNetDecimalFormatter,
-  FieldedTextLocaleSettings,
+  DotNetLocaleSettings,
   DotNetNumberStyles,
   DotNetNumberStyleId,
   DotNetDateTimeStyles,

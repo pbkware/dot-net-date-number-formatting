@@ -1,10 +1,10 @@
 import { Err, Ok, Result } from "@pbkware/js-utils";
+import { DotNetLocaleSettings } from "./locale-settings.js";
 import {
   DotNetNumberStyleId,
   DotNetNumberStyleSet,
   DotNetNumberStyles,
-} from "./dotnet-number-style.js";
-import { FieldedTextLocaleSettings } from "./locale-settings.js";
+} from "./number-style.js";
 
 type ElementType =
   | "standard"
@@ -43,7 +43,7 @@ export class DotNetNumberFormatter {
   private sections: FormatSection[] = [];
 
   styles: DotNetNumberStyleSet = new Set(DotNetNumberStyles.number);
-  localeSettings = FieldedTextLocaleSettings.current;
+  localeSettings = DotNetLocaleSettings.current;
   parseErrorText = "";
 
   protected setParseErrorText(value: string): false {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { DotNetDateTimeFormatter } from "../src/code/datetime-formatter";
-import { FieldedTextLocaleSettings } from "../src/code/locale-settings";
+import { DotNetLocaleSettings } from "../src/code/locale-settings";
 
 describe("DotNetDateTimeFormatter", () => {
   // Test date: July 5, 2024, 14:03:09.120 (Friday, 2nd week of July)
@@ -14,7 +14,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Short date (d)", () => {
       it("formats with short date pattern", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("d");
         expect(result.isOk()).toBe(true);
 
@@ -28,7 +28,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Long date (D)", () => {
       it("formats with long date pattern", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("D");
         expect(result.isOk()).toBe(true);
 
@@ -41,7 +41,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Full date short time (f)", () => {
       it("formats with full date and short time", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("f");
         expect(result.isOk()).toBe(true);
 
@@ -55,7 +55,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Full date long time (F)", () => {
       it("formats with full date and long time", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("F");
         expect(result.isOk()).toBe(true);
 
@@ -71,7 +71,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("General date short time (g)", () => {
       it("formats with general date and short time", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("g");
         expect(result.isOk()).toBe(true);
 
@@ -85,7 +85,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("General date long time (G)", () => {
       it("formats with general date and long time", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("G");
         expect(result.isOk()).toBe(true);
 
@@ -100,7 +100,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Month/day (M or m)", () => {
       it("formats with M (uppercase)", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("M");
         expect(result.isOk()).toBe(true);
 
@@ -110,7 +110,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("formats with m (lowercase)", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("m");
         expect(result.isOk()).toBe(true);
 
@@ -122,7 +122,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Round-trip (O or o)", () => {
       it("formats with O (uppercase) for ISO 8601", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("O");
         expect(result.isOk()).toBe(true);
 
@@ -133,7 +133,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("formats with o (lowercase) for ISO 8601", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("o");
         expect(result.isOk()).toBe(true);
 
@@ -146,7 +146,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Sortable (s)", () => {
       it("formats with sortable pattern", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("s");
         expect(result.isOk()).toBe(true);
 
@@ -158,7 +158,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Short time (t)", () => {
       it("formats with short time pattern", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("t");
         expect(result.isOk()).toBe(true);
 
@@ -171,7 +171,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Long time (T)", () => {
       it("formats with long time pattern", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("T");
         expect(result.isOk()).toBe(true);
 
@@ -185,7 +185,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Universal sortable (u)", () => {
       it("formats with universal sortable pattern", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("u");
         expect(result.isOk()).toBe(true);
 
@@ -198,7 +198,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Year month (Y or y)", () => {
       it("formats with Y (uppercase)", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("Y");
         expect(result.isOk()).toBe(true);
 
@@ -208,7 +208,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("formats with y (lowercase)", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         const result = formatter.trySetFormat("y");
         expect(result.isOk()).toBe(true);
 
@@ -222,7 +222,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("d - Day without leading zero", () => {
       it("formats single-digit day without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%d");
 
         expect(formatter.toString(testDate)).toBe("5");
@@ -231,7 +231,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses single-digit day", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("yyyy-M-d");
 
         const parsed = formatter.tryFromString("2024-7-5");
@@ -245,7 +245,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("dd - Day with leading zero", () => {
       it("formats day with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%dd");
 
         expect(formatter.toString(testDate)).toBe("05");
@@ -254,7 +254,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses day with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("yyyy-MM-dd");
 
         const parsed = formatter.tryFromString("2024-07-05");
@@ -268,7 +268,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("ddd - Abbreviated day name", () => {
       it("formats abbreviated day name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%ddd");
 
         expect(formatter.toString(testDate)).toBe("Fri");
@@ -277,7 +277,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses abbreviated day name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("ddd, dd MMM yyyy");
 
         const parsed = formatter.tryFromString("Fri, 05 Jul 2024");
@@ -288,7 +288,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("dddd - Full day name", () => {
       it("formats full day name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%dddd");
 
         expect(formatter.toString(testDate)).toBe("Friday");
@@ -297,7 +297,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses full day name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("dddd, dd MMMM yyyy");
 
         const parsed = formatter.tryFromString("Friday, 05 July 2024");
@@ -310,7 +310,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("M - Month without leading zero", () => {
       it("formats single-digit month without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%M");
 
         expect(formatter.toString(testDate)).toBe("7");
@@ -319,7 +319,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses single-digit month", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("M/d/yyyy");
 
         const parsed = formatter.tryFromString("7/5/2024");
@@ -333,7 +333,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("MM - Month with leading zero", () => {
       it("formats month with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%MM");
 
         expect(formatter.toString(testDate)).toBe("07");
@@ -342,7 +342,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses month with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("MM/dd/yyyy");
 
         const parsed = formatter.tryFromString("07/05/2024");
@@ -356,7 +356,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("MMM - Abbreviated month name", () => {
       it("formats abbreviated month name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%MMM");
 
         expect(formatter.toString(testDate)).toBe("Jul");
@@ -365,7 +365,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses abbreviated month name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("dd MMM yyyy");
 
         const parsed = formatter.tryFromString("05 Jul 2024");
@@ -379,7 +379,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("MMMM - Full month name", () => {
       it("formats full month name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%MMMM");
 
         expect(formatter.toString(testDate)).toBe("July");
@@ -388,7 +388,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses full month name", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("dd MMMM yyyy");
 
         const parsed = formatter.tryFromString("05 July 2024");
@@ -404,7 +404,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("y or yy - Two-digit year", () => {
       it("formats two-digit year", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%yy");
 
         expect(formatter.toString(testDate)).toBe("24");
@@ -413,7 +413,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses two-digit year", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("MM/dd/yy");
 
         const parsed = formatter.tryFromString("07/05/24");
@@ -427,7 +427,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("yyy - Three-digit year", () => {
       it("formats three-digit year", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%yyy");
 
         expect(formatter.toString(testDate)).toBe("2024");
@@ -438,7 +438,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("yyyy - Four-digit year", () => {
       it("formats four-digit year", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%yyyy");
 
         expect(formatter.toString(testDate)).toBe("2024");
@@ -447,7 +447,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses four-digit year", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("MM/dd/yyyy");
 
         const parsed = formatter.tryFromString("07/05/2024");
@@ -461,7 +461,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("yyyyy - Five-digit year", () => {
       it("formats five-digit year", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%yyyyy");
 
         expect(formatter.toString(testDate)).toBe("02024");
@@ -474,7 +474,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("h - 12-hour without leading zero", () => {
       it("formats hour in 12-hour format without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%h");
 
         expect(formatter.toString(testDate)).toBe("2"); // 14:00 -> 2 PM
@@ -484,7 +484,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses 12-hour format without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("h:mm tt");
 
         const parsed = formatter.tryFromString("2:03 PM");
@@ -498,7 +498,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("hh - 12-hour with leading zero", () => {
       it("formats hour in 12-hour format with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%hh");
 
         expect(formatter.toString(testDate)).toBe("02");
@@ -508,7 +508,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses 12-hour format with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("hh:mm:ss tt");
 
         const parsed = formatter.tryFromString("02:03:09 PM");
@@ -522,7 +522,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("H - 24-hour without leading zero", () => {
       it("formats hour in 24-hour format without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%H");
 
         expect(formatter.toString(testDate)).toBe("14");
@@ -532,7 +532,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses 24-hour format without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("H:mm");
 
         const parsed = formatter.tryFromString("14:03");
@@ -546,7 +546,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("HH - 24-hour with leading zero", () => {
       it("formats hour in 24-hour format with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%HH");
 
         expect(formatter.toString(testDate)).toBe("14");
@@ -556,7 +556,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses 24-hour format with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm:ss");
 
         const parsed = formatter.tryFromString("14:03:09");
@@ -572,7 +572,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("m - Minute without leading zero", () => {
       it("formats minute without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%m");
 
         expect(formatter.toString(testDate)).toBe("3");
@@ -581,7 +581,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses minute without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("H:m");
 
         const parsed = formatter.tryFromString("14:3");
@@ -595,7 +595,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("mm - Minute with leading zero", () => {
       it("formats minute with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%mm");
 
         expect(formatter.toString(testDate)).toBe("03");
@@ -604,7 +604,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses minute with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm");
 
         const parsed = formatter.tryFromString("14:03");
@@ -620,7 +620,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("s - Second without leading zero", () => {
       it("formats second without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%s");
 
         expect(formatter.toString(testDate)).toBe("9");
@@ -629,7 +629,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses second without leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("H:m:s");
 
         const parsed = formatter.tryFromString("14:3:9");
@@ -643,7 +643,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("ss - Second with leading zero", () => {
       it("formats second with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%ss");
 
         expect(formatter.toString(testDate)).toBe("09");
@@ -652,7 +652,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses second with leading zero", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm:ss");
 
         const parsed = formatter.tryFromString("14:03:09");
@@ -668,7 +668,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("f - Tenths of a second", () => {
       it("formats tenths of a second", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%f");
 
         expect(formatter.toString(testDate)).toBe("1"); // 120 ms -> .1
@@ -677,7 +677,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses tenths of a second", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm:ss.f");
 
         const parsed = formatter.tryFromString("14:03:09.1");
@@ -691,7 +691,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("ff - Hundredths of a second", () => {
       it("formats hundredths of a second", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%ff");
 
         expect(formatter.toString(testDate)).toBe("12");
@@ -702,7 +702,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("fff - Milliseconds", () => {
       it("formats milliseconds", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%fff");
 
         expect(formatter.toString(testDate)).toBe("120");
@@ -711,7 +711,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses milliseconds", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm:ss.fff");
 
         const parsed = formatter.tryFromString("14:03:09.120");
@@ -725,7 +725,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("ffff to fffffff - Extended precision", () => {
       it("formats with extended precision (pads with zeros)", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%fffffff");
 
         expect(formatter.toString(testDate)).toBe("1200000");
@@ -735,7 +735,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("F - Tenths with trailing zeros trimmed", () => {
       it("formats tenths with trailing zeros removed", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%F");
 
         expect(formatter.toString(testDate)).toBe("1");
@@ -746,7 +746,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("FFF - Milliseconds with trailing zeros trimmed", () => {
       it("formats milliseconds with trailing zeros removed", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%FFF");
 
         expect(formatter.toString(testDate)).toBe("12"); // 120 -> "12"
@@ -759,7 +759,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("t - First character of AM/PM", () => {
       it("formats first character of AM/PM designator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%t");
 
         expect(formatter.toString(testDate)).toBe("P"); // 14:00 is PM
@@ -768,7 +768,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses first character of AM/PM designator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("h:mm t");
 
         const parsedPM = formatter.tryFromString("2:03 P");
@@ -788,7 +788,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("tt - Full AM/PM designator", () => {
       it("formats full AM/PM designator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%tt");
 
         expect(formatter.toString(testDate)).toBe("PM");
@@ -797,7 +797,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses full AM/PM designator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("h:mm:ss tt");
 
         const parsedPM = formatter.tryFromString("2:03:09 PM");
@@ -819,7 +819,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("/ - Date separator", () => {
       it("formats with date separator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("MM/dd/yyyy");
 
         expect(formatter.toString(testDate)).toBe("07/05/2024");
@@ -827,7 +827,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses with date separator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("MM/dd/yyyy");
 
         const parsed = formatter.tryFromString("07/05/2024");
@@ -843,7 +843,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe(": - Time separator", () => {
       it("formats with time separator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm:ss");
 
         expect(formatter.toString(testDate)).toBe("14:03:09");
@@ -851,7 +851,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses with time separator", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("HH:mm:ss");
 
         const parsed = formatter.tryFromString("14:03:09");
@@ -869,7 +869,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Quoted literal strings", () => {
       it("formats with single-quoted literal", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("yyyy'-'MM'-'dd 'at' HH:mm");
 
         expect(formatter.toString(testDate)).toBe("2024-07-05 at 14:03");
@@ -877,7 +877,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("formats with double-quoted literal", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat('yyyy"-"MM"-"dd "at" HH:mm');
 
         expect(formatter.toString(testDate)).toBe("2024-07-05 at 14:03");
@@ -885,7 +885,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses with quoted literal", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("yyyy'-'MM'-'dd 'at' HH:mm");
 
         const parsed = formatter.tryFromString("2024-07-05 at 14:03");
@@ -901,7 +901,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("Escaped characters", () => {
       it("formats with escaped characters", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("h \\h m \\m");
 
         expect(formatter.toString(testDate)).toBe("2 h 3 m");
@@ -909,7 +909,7 @@ describe("DotNetDateTimeFormatter", () => {
 
       it("parses with escaped characters", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("h \\h m \\m");
 
         const parsed = formatter.tryFromString("2 h 3 m");
@@ -924,7 +924,7 @@ describe("DotNetDateTimeFormatter", () => {
     describe("% - Single custom format specifier", () => {
       it("formats with % prefix for single specifier", () => {
         const formatter = new DotNetDateTimeFormatter();
-        formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+        formatter.localeSettings = DotNetLocaleSettings.createInvariant();
         formatter.trySetFormat("%d");
 
         expect(formatter.toString(testDate)).toBe("5");
@@ -935,7 +935,7 @@ describe("DotNetDateTimeFormatter", () => {
   describe("Complex Custom Format Patterns", () => {
     it("formats combination pattern with date and time", () => {
       const formatter = new DotNetDateTimeFormatter();
-      formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+      formatter.localeSettings = DotNetLocaleSettings.createInvariant();
       formatter.trySetFormat("dddd, dd MMMM yyyy HH:mm:ss");
 
       expect(formatter.toString(testDate)).toBe(
@@ -945,7 +945,7 @@ describe("DotNetDateTimeFormatter", () => {
 
     it("parses combination pattern with date and time", () => {
       const formatter = new DotNetDateTimeFormatter();
-      formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+      formatter.localeSettings = DotNetLocaleSettings.createInvariant();
       formatter.trySetFormat("dddd, dd MMMM yyyy HH:mm:ss");
 
       const parsed = formatter.tryFromString("Friday, 05 July 2024 14:03:09");
@@ -962,7 +962,7 @@ describe("DotNetDateTimeFormatter", () => {
 
     it("formats 12-hour clock with AM/PM", () => {
       const formatter = new DotNetDateTimeFormatter();
-      formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+      formatter.localeSettings = DotNetLocaleSettings.createInvariant();
       formatter.trySetFormat("hh:mm:ss tt");
 
       expect(formatter.toString(testDate)).toBe("02:03:09 PM");
@@ -971,7 +971,7 @@ describe("DotNetDateTimeFormatter", () => {
 
     it("formats with milliseconds", () => {
       const formatter = new DotNetDateTimeFormatter();
-      formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+      formatter.localeSettings = DotNetLocaleSettings.createInvariant();
       formatter.trySetFormat("HH:mm:ss.fff");
 
       expect(formatter.toString(testDate)).toBe("14:03:09.120");
@@ -979,7 +979,7 @@ describe("DotNetDateTimeFormatter", () => {
 
     it("formats ISO 8601-like pattern", () => {
       const formatter = new DotNetDateTimeFormatter();
-      formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+      formatter.localeSettings = DotNetLocaleSettings.createInvariant();
       formatter.trySetFormat("yyyy-MM-dd'T'HH:mm:ss");
 
       expect(formatter.toString(testDate)).toBe("2024-07-05T14:03:09");

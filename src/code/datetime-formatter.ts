@@ -3,8 +3,8 @@ import {
   DotNetDateTimeStyleId,
   DotNetDateTimeStyleSet,
   DotNetDateTimeStyles,
-} from "./dotnet-datetime-style.js";
-import { FieldedTextLocaleSettings } from "./locale-settings.js";
+} from "./datetime-style.js";
+import { DotNetLocaleSettings } from "./locale-settings.js";
 
 type ElementType =
   | "standard"
@@ -280,7 +280,7 @@ export class DotNetDateTimeFormatter {
 
   private format = "";
   styles: DotNetDateTimeStyleSet = new Set(DotNetDateTimeStyles.none);
-  localeSettings = FieldedTextLocaleSettings.current;
+  localeSettings = DotNetLocaleSettings.current;
 
   private formatIsStandard = false;
   private elements: Element[] = [];

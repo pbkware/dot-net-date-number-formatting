@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { DotNetNumberStyleId } from "../src/code/dotnet-number-style";
-import { FieldedTextLocaleSettings } from "../src/code/locale-settings";
+import { DotNetLocaleSettings } from "../src/code/locale-settings";
 import {
   DotNetFloatFormatter,
   DotNetIntegerFormatter,
 } from "../src/code/number-formatter";
+import { DotNetNumberStyleId } from "../src/code/number-style";
 
 describe("DotNetIntegerFormatter - Parsing", () => {
   it("parses hex with leading sign when style allows", () => {
     const formatter = new DotNetIntegerFormatter();
-    formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+    formatter.localeSettings = DotNetLocaleSettings.createInvariant();
     formatter.styles = new Set([
       DotNetNumberStyleId.AllowHexSpecifier,
       DotNetNumberStyleId.AllowLeadingSign,
@@ -37,7 +37,7 @@ describe("DotNetIntegerFormatter - Parsing", () => {
 describe("DotNetFloatFormatter - Parsing", () => {
   it("parses trailing sign when style allows", () => {
     const formatter = new DotNetFloatFormatter();
-    formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+    formatter.localeSettings = DotNetLocaleSettings.createInvariant();
     formatter.styles = new Set([
       DotNetNumberStyleId.AllowDecimalPoint,
       DotNetNumberStyleId.AllowTrailingSign,
@@ -56,7 +56,7 @@ describe("DotNetFloatFormatter - Parsing", () => {
 // Standard Numeric Format String Tests
 describe("DotNetFloatFormatter - Standard Format Strings", () => {
   const formatter = new DotNetFloatFormatter();
-  formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+  formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
   describe("Currency (C) format", () => {
     it("formats with default precision", () => {
@@ -252,7 +252,7 @@ describe("DotNetFloatFormatter - Standard Format Strings", () => {
 // Custom Numeric Format String Tests
 describe("DotNetFloatFormatter - Custom Format Strings", () => {
   const formatter = new DotNetFloatFormatter();
-  formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+  formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
   describe("Zero placeholder (0)", () => {
     it("pads with zeros", () => {
@@ -300,7 +300,7 @@ describe("DotNetFloatFormatter - Custom Format Strings", () => {
 
     it("uses locale-specific separator", () => {
       const frFormatter = new DotNetFloatFormatter();
-      frFormatter.localeSettings = FieldedTextLocaleSettings.create("fr-FR");
+      frFormatter.localeSettings = DotNetLocaleSettings.create("fr-FR");
       frFormatter.trySetFormat("0.0");
       const result = frFormatter.toString(1.5);
       expect(result).toContain(",");
@@ -458,7 +458,7 @@ describe("DotNetFloatFormatter - Custom Format Strings", () => {
 
 describe("DotNetIntegerFormatter - Standard Format Strings", () => {
   const formatter = new DotNetIntegerFormatter();
-  formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+  formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
   it("formats with Decimal (D) format", () => {
     formatter.trySetFormat("D");
@@ -511,9 +511,9 @@ describe("Format String Errors", () => {
 });
 
 // Issue 1: Culture-Aware Character Case Conversion
-describe("FieldedTextLocaleSettings - Culture-Aware Char Conversion", () => {
+describe("DotNetLocaleSettings - Culture-Aware Char Conversion", () => {
   describe("English (en-US) locale", () => {
-    const settings = FieldedTextLocaleSettings.create("en-US");
+    const settings = DotNetLocaleSettings.create("en-US");
 
     it("converts lowercase to uppercase", () => {
       expect(settings.toUpperChar("a")).toBe("A");
@@ -539,7 +539,7 @@ describe("FieldedTextLocaleSettings - Culture-Aware Char Conversion", () => {
   });
 
   describe("Turkish (tr-TR) locale - special i/I rules", () => {
-    const settings = FieldedTextLocaleSettings.create("tr-TR");
+    const settings = DotNetLocaleSettings.create("tr-TR");
 
     it("converts Turkish lowercase i to dotted uppercase İ", () => {
       expect(settings.toUpperChar("i")).toBe("İ");
@@ -564,7 +564,7 @@ describe("FieldedTextLocaleSettings - Culture-Aware Char Conversion", () => {
   });
 
   describe("Invariant locale", () => {
-    const settings = FieldedTextLocaleSettings.createInvariant();
+    const settings = DotNetLocaleSettings.createInvariant();
 
     it("converts to uppercase", () => {
       expect(settings.toUpperChar("a")).toBe("A");
@@ -587,7 +587,7 @@ describe("FieldedTextLocaleSettings - Culture-Aware Char Conversion", () => {
 // Issue 2: Scientific Notation Parsing
 describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
   const formatter = new DotNetFloatFormatter();
-  formatter.localeSettings = FieldedTextLocaleSettings.createInvariant();
+  formatter.localeSettings = DotNetLocaleSettings.createInvariant();
   formatter.styles = new Set([
     DotNetNumberStyleId.AllowLeadingSign,
     DotNetNumberStyleId.AllowDecimalPoint,
@@ -793,7 +793,7 @@ describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
 
   describe("Culture-specific decimal separator with scientific notation", () => {
     it("handles culture decimal separator in mantissa", () => {
-      const frSettings = FieldedTextLocaleSettings.create("fr-FR");
+      const frSettings = DotNetLocaleSettings.create("fr-FR");
       const frFormatter = new DotNetFloatFormatter();
       frFormatter.localeSettings = frSettings;
       frFormatter.styles = new Set([
@@ -813,7 +813,7 @@ describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
     });
 
     it("preserves standard exponent notation", () => {
-      const deSettings = FieldedTextLocaleSettings.create("de-DE");
+      const deSettings = DotNetLocaleSettings.create("de-DE");
       const deFormatter = new DotNetFloatFormatter();
       deFormatter.localeSettings = deSettings;
       deFormatter.styles = new Set([

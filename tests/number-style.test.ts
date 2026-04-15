@@ -3,7 +3,7 @@ import {
   DotNetNumberStyleId,
   DotNetNumberStyles,
   DotNetNumberStylesInfo,
-} from "../src/code/dotnet-number-style";
+} from "../src/code/number-style";
 
 describe("DotNetNumberStylesInfo", () => {
   it("serializes known presets", () => {

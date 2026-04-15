@@ -9,7 +9,7 @@ import { Result } from '@pbkware/js-utils';
 // @public (undocumented)
 export class DotNetDateTimeFormatter {
     // (undocumented)
-    localeSettings: FieldedTextLocaleSettings;
+    localeSettings: DotNetLocaleSettings;
     // (undocumented)
     parseErrorText: string;
     // (undocumented)
@@ -94,6 +94,73 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
 }
 
 // @public (undocumented)
+export class DotNetLocaleSettings {
+    constructor(localeName?: string);
+    // (undocumented)
+    boolToStr(value: boolean): string;
+    // (undocumented)
+    cardinalToStr(value: number): string;
+    // (undocumented)
+    static create(localeName: string): DotNetLocaleSettings;
+    // (undocumented)
+    static createInvariant(): DotNetLocaleSettings;
+    // (undocumented)
+    readonly currencyString: string;
+    // (undocumented)
+    static readonly current: DotNetLocaleSettings;
+    // (undocumented)
+    currToStr(value: number): string;
+    // (undocumented)
+    currToStrF(value: number, digits: number): string;
+    // (undocumented)
+    readonly dateSeparator: string;
+    // (undocumented)
+    dateTimeToStr(value: Date): string;
+    // (undocumented)
+    dateToStr(value: Date): string;
+    // (undocumented)
+    readonly decimalSeparator: string;
+    // (undocumented)
+    readonly defaultCurrency: Intl.NumberFormat;
+    // (undocumented)
+    readonly defaultDecimal: Intl.NumberFormat;
+    // (undocumented)
+    readonly defaultFloat: Intl.NumberFormat;
+    // (undocumented)
+    floatToStr(value: number): string;
+    // (undocumented)
+    readonly id: string;
+    // (undocumented)
+    intToStr(value: number | bigint): string;
+    // (undocumented)
+    static readonly invariant: DotNetLocaleSettings;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    readonly thousandSeparator: string;
+    // (undocumented)
+    readonly timeSeparator: string;
+    toLowerChar(char: string): string;
+    toUpperChar(char: string): string;
+    // (undocumented)
+    tryStrToBool(value: string): Result<boolean>;
+    // (undocumented)
+    tryStrToCurr(value: string): Result<number>;
+    // (undocumented)
+    tryStrToDate(value: string): Result<Date>;
+    // (undocumented)
+    tryStrToDateTime(value: string): Result<Date>;
+    // (undocumented)
+    tryStrToFloat(value: string): Result<number>;
+    // (undocumented)
+    tryStrToInt(value: string): Result<number>;
+    // (undocumented)
+    tryStrToInt64(value: string): Result<bigint>;
+    // (undocumented)
+    uint64ToStr(value: bigint): string;
+}
+
+// @public (undocumented)
 export class DotNetNumberFormatter {
     // (undocumented)
     protected format: string;
@@ -106,7 +173,7 @@ export class DotNetNumberFormatter {
     // (undocumented)
     hasExponentChar(value: string): boolean;
     // (undocumented)
-    localeSettings: FieldedTextLocaleSettings;
+    localeSettings: DotNetLocaleSettings;
     // (undocumented)
     parseErrorText: string;
     // (undocumented)
@@ -180,73 +247,6 @@ export class DotNetNumberStylesInfo {
     static tryFromXmlValue(value: string): Result<DotNetNumberStyleSet>;
     // (undocumented)
     static tryFromXmlValueWithDefault(value: string, defaultStyles: DotNetNumberStyleSet): Result<DotNetNumberStyleSet>;
-}
-
-// @public (undocumented)
-export class FieldedTextLocaleSettings {
-    constructor(localeName?: string);
-    // (undocumented)
-    boolToStr(value: boolean): string;
-    // (undocumented)
-    cardinalToStr(value: number): string;
-    // (undocumented)
-    static create(localeName: string): FieldedTextLocaleSettings;
-    // (undocumented)
-    static createInvariant(): FieldedTextLocaleSettings;
-    // (undocumented)
-    readonly currencyString: string;
-    // (undocumented)
-    static readonly current: FieldedTextLocaleSettings;
-    // (undocumented)
-    currToStr(value: number): string;
-    // (undocumented)
-    currToStrF(value: number, digits: number): string;
-    // (undocumented)
-    readonly dateSeparator: string;
-    // (undocumented)
-    dateTimeToStr(value: Date): string;
-    // (undocumented)
-    dateToStr(value: Date): string;
-    // (undocumented)
-    readonly decimalSeparator: string;
-    // (undocumented)
-    readonly defaultCurrency: Intl.NumberFormat;
-    // (undocumented)
-    readonly defaultDecimal: Intl.NumberFormat;
-    // (undocumented)
-    readonly defaultFloat: Intl.NumberFormat;
-    // (undocumented)
-    floatToStr(value: number): string;
-    // (undocumented)
-    readonly id: string;
-    // (undocumented)
-    intToStr(value: number | bigint): string;
-    // (undocumented)
-    static readonly invariant: FieldedTextLocaleSettings;
-    // (undocumented)
-    readonly name: string;
-    // (undocumented)
-    readonly thousandSeparator: string;
-    // (undocumented)
-    readonly timeSeparator: string;
-    toLowerChar(char: string): string;
-    toUpperChar(char: string): string;
-    // (undocumented)
-    tryStrToBool(value: string): Result<boolean>;
-    // (undocumented)
-    tryStrToCurr(value: string): Result<number>;
-    // (undocumented)
-    tryStrToDate(value: string): Result<Date>;
-    // (undocumented)
-    tryStrToDateTime(value: string): Result<Date>;
-    // (undocumented)
-    tryStrToFloat(value: string): Result<number>;
-    // (undocumented)
-    tryStrToInt(value: string): Result<number>;
-    // (undocumented)
-    tryStrToInt64(value: string): Result<bigint>;
-    // (undocumented)
-    uint64ToStr(value: bigint): string;
 }
 
 // (No @packageDocumentation comment for this package)

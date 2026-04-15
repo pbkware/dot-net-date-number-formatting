@@ -58,9 +58,9 @@ function getSeparators(locale: string): {
 }
 
 /** @public */
-export class FieldedTextLocaleSettings {
-  static readonly invariant = FieldedTextLocaleSettings.createInvariant();
-  static readonly current = new FieldedTextLocaleSettings(undefined);
+export class DotNetLocaleSettings {
+  static readonly invariant = DotNetLocaleSettings.createInvariant();
+  static readonly current = new DotNetLocaleSettings(undefined);
 
   readonly id: string;
   readonly name: string;
@@ -99,12 +99,12 @@ export class FieldedTextLocaleSettings {
     });
   }
 
-  static create(localeName: string): FieldedTextLocaleSettings {
-    return new FieldedTextLocaleSettings(localeName);
+  static create(localeName: string): DotNetLocaleSettings {
+    return new DotNetLocaleSettings(localeName);
   }
 
-  static createInvariant(): FieldedTextLocaleSettings {
-    return new FieldedTextLocaleSettings(INVARIANT_LOCALE);
+  static createInvariant(): DotNetLocaleSettings {
+    return new DotNetLocaleSettings(INVARIANT_LOCALE);
   }
 
   intToStr(value: number | bigint): string {
