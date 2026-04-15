@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "strict": true,
     "skipLibCheck": true,
-    "rootDir": "src",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "./lib"
   },
-  // "include": ["src/**/*.ts", "tests/**/*.ts"]
-  "include": ["src/**/*.ts"]
+  "files": ["src/code/index.ts"]
 }
