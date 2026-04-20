@@ -15,7 +15,7 @@ Built on top of JavaScript's `Intl` API for locale-aware formatting while mainta
 ## Installation
 
 ```bash
-npm install dot-net-date-number-formatting
+npm install @pbkware/dot-net-date-number-formatting
 ```
 
 ## Quick Start
@@ -23,7 +23,7 @@ npm install dot-net-date-number-formatting
 ### DateTime Formatting
 
 ```typescript
-import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetDateTimeFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -40,7 +40,7 @@ console.log(formatter.toString(new Date(2024, 6, 5, 14, 30, 0)));  // "2024-07-0
 ### Numeric Formatting
 
 ```typescript
-import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -57,7 +57,7 @@ console.log(formatter.toString(1234.56));  // "1,234.56"
 ### Number Parsing
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyles } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.styles = DotNetNumberStyles.number;
@@ -109,7 +109,7 @@ Comprehensive documentation is available at library [website](https://pbkware.gi
 
 ## Downloads
 
-- [npm package](https://www.npmjs.com/package/dot-net-date-number-formatting)
+- [npm package](https://www.npmjs.com/package/@pbkware/dot-net-date-number-formatting)
 - [GitHub repository](https://github.com/pbkware/dot-net-date-number-formatting)
 
 ## License

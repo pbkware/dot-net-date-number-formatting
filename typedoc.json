@@ -5,7 +5,7 @@
   "alwaysCreateEntryPointModule": false,
   "exclude": ["./src/code/index.ts"],
   "out": "./docs",
-  "name": "dot-net-date-number-formatting",
+  "name": "@pbkware/dot-net-date-number-formatting",
   "includeVersion": true,
   "readme": "README.md",
   "projectDocuments": [

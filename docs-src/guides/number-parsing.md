@@ -7,7 +7,7 @@ The library supports parsing numbers from strings using configurable style flags
 All number formatters (`DotNetIntegerFormatter`, `DotNetFloatFormatter`, `DotNetDecimalFormatter`) support parsing:
 
 ```typescript
-import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -42,7 +42,7 @@ Control which number formats are allowed during parsing using `DotNetNumberStyle
 ### Custom Style Combinations
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -76,7 +76,7 @@ Use `DotNetNumberStyles` for common parsing scenarios:
 No special styles - only basic digits:
 
 ```typescript
-import { DotNetNumberStyles } from 'dot-net-date-number-formatting';
+import { DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
 
 formatter.styles = DotNetNumberStyles.none;
 
@@ -162,7 +162,7 @@ formatter.tryFromString('  +123.45-  '); // OK (contradictory signs handled)
 Hexadecimal parsing:
 
 ```typescript
-import { DotNetIntegerFormatter, DotNetNumberStyles } from 'dot-net-date-number-formatting';
+import { DotNetIntegerFormatter, DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
 
 const intFormatter = new DotNetIntegerFormatter();
 intFormatter.styles = DotNetNumberStyles.hexNumber;
@@ -180,7 +180,7 @@ intFormatter.tryFromString('ABCD');  // OK: 43981n
 ### Flexible Number Parsing
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -216,7 +216,7 @@ testValues.forEach(str => {
 ### Currency Parsing
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -261,7 +261,7 @@ scientificValues.forEach(str => {
 ### Hexadecimal Parsing
 
 ```typescript
-import { DotNetIntegerFormatter, DotNetNumberStyles } from 'dot-net-date-number-formatting';
+import { DotNetIntegerFormatter, DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
 
 const intFormatter = new DotNetIntegerFormatter();
 intFormatter.styles = DotNetNumberStyles.hexNumber;
@@ -306,7 +306,7 @@ if (result.isErr()) {
 Parsing respects locale settings for decimal and thousands separators:
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.styles = DotNetNumberStyles.number;

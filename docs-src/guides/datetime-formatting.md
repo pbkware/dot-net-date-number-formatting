@@ -25,7 +25,7 @@ Standard format strings use a single character to specify a predefined format pa
 ### Example
 
 ```typescript
-import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetDateTimeFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -127,7 +127,7 @@ console.log(formatter.toString(date));  // "2024-07-05_140309"
 Date separators and day/month names are affected by the locale settings:
 
 ```typescript
-import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetDateTimeFormatter();
 const date = new Date(2024, 6, 5, 14, 30, 0);

@@ -28,7 +28,7 @@ Where `{n}` is an optional precision specifier (number of decimal places or digi
 ### Currency Format (C)
 
 ```typescript
-import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -48,7 +48,7 @@ console.log(formatter.toString(1234.56));  // "$1,235"
 For integers only. Pads with leading zeros if necessary:
 
 ```typescript
-import { DotNetIntegerFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetIntegerFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetIntegerFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -295,7 +295,7 @@ console.log(formatter.toString(1234));  // "#1,234"
 Number formatting respects locale settings for decimal and thousands separators:
 
 ```typescript
-import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 const value = 1234.56;

@@ -9,7 +9,7 @@ import {
   DotNetFloatFormatter, 
   DotNetDateTimeFormatter,
   DotNetLocaleSettings 
-} from 'dot-net-date-number-formatting';
+} from '@pbkware/dot-net-date-number-formatting';
 
 class LocalizedFormatter {
   private numberFormatter: DotNetFloatFormatter;
@@ -61,7 +61,7 @@ import {
   DotNetDateTimeFormatter,
   DotNetNumberStyles,
   DotNetLocaleSettings 
-} from 'dot-net-date-number-formatting';
+} from '@pbkware/dot-net-date-number-formatting';
 
 class DataExporter {
   private numberFormatter: DotNetFloatFormatter;
@@ -134,7 +134,7 @@ import {
   DotNetFloatFormatter, 
   DotNetDateTimeFormatter,
   DotNetLocaleSettings 
-} from 'dot-net-date-number-formatting';
+} from '@pbkware/dot-net-date-number-formatting';
 
 interface SalesRecord {
   product: string;
@@ -220,7 +220,7 @@ import {
   DotNetIntegerFormatter,
   DotNetDateTimeFormatter,
   DotNetLocaleSettings 
-} from 'dot-net-date-number-formatting';
+} from '@pbkware/dot-net-date-number-formatting';
 
 class ConfigManager {
   private settings = DotNetLocaleSettings.createInvariant();
@@ -288,7 +288,7 @@ console.log(saved);
 Advanced date formatting scenarios:
 
 ```typescript
-import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 class DateDisplay {
   private formatter: DotNetDateTimeFormatter;
@@ -370,7 +370,7 @@ import {
   DotNetDecimalFormatter,
   DotNetFloatFormatter, 
   DotNetLocaleSettings 
-} from 'dot-net-date-number-formatting';
+} from '@pbkware/dot-net-date-number-formatting';
 
 class FinancialCalculator {
   private decimalFormatter: DotNetDecimalFormatter;

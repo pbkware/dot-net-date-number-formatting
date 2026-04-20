@@ -9,7 +9,7 @@ The `DotNetLocaleSettings` class provides locale-specific formatting settings in
 Use the current system locale:
 
 ```typescript
-import { DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const settings = DotNetLocaleSettings.current;
 console.log(settings.name);  // e.g., "en-US"
@@ -79,7 +79,7 @@ console.log(british.currencyString);  // "£"
 ### DateTime Formatting
 
 ```typescript
-import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetDateTimeFormatter();
 const date = new Date(2024, 6, 5, 14, 30, 0);
@@ -103,7 +103,7 @@ console.log(formatter.toString(date));  // "05.07.2024"
 ### Number Formatting
 
 ```typescript
-import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 const value = 1234.56;

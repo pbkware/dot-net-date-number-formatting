@@ -5,7 +5,7 @@
 Install the library using npm:
 
 ```bash
-npm install dot-net-date-number-formatting
+npm install @pbkware/dot-net-date-number-formatting
 ```
 
 ## Basic Usage
@@ -17,7 +17,7 @@ The library provides three main components for formatting and parsing:
 Format dates using .NET-compatible format strings:
 
 ```typescript
-import { DotNetDateTimeFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetDateTimeFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetDateTimeFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -40,7 +40,7 @@ console.log(formatter.toString(new Date(2024, 6, 5)));  // "2024-07-05"
 Format numbers using .NET-compatible format strings:
 
 ```typescript
-import { DotNetFloatFormatter, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
@@ -61,7 +61,7 @@ console.log(formatter.toString(0.1234));  // "12.3%"
 Parse numbers with specific style requirements:
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from 'dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyles, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
