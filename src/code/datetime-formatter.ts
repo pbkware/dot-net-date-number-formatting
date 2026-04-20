@@ -330,7 +330,7 @@ export class DotNetDateTimeFormatter {
 
   /**
    * Contains the error message from the last failed operation.
-   * Check this property if {@link trySetFormat} returns an error.
+   * Check this property if {@link DotNetDateTimeFormatter.trySetFormat} returns an error.
    */
   parseErrorText = "";
 

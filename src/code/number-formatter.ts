@@ -87,7 +87,7 @@ export class DotNetNumberFormatter {
 
   /**
    * Contains the error message from the last failed operation.
-   * Check this property if {@link trySetFormat} or parsing methods return an error.
+   * Check this property if {@link DotNetNumberFormatter.trySetFormat} or parsing methods return an error.
    */
   parseErrorText = "";
 

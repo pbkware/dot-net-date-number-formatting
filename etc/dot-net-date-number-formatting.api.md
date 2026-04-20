@@ -6,53 +6,39 @@
 
 import { Result } from '@pbkware/js-utils';
 
-// @public (undocumented)
+// @public
 export class DotNetDateTimeFormatter {
-    // (undocumented)
     localeSettings: DotNetLocaleSettings;
-    // (undocumented)
     parseErrorText: string;
-    // (undocumented)
     styles: DotNetDateTimeStyleSet;
-    // (undocumented)
     toString(value: Date): string;
     // (undocumented)
     tryFromString(strValue: string): Result<Date>;
-    // (undocumented)
     trySetFormat(value: string): Result<void>;
-    // (undocumented)
     static readonly unsupportedStyles: Set<DotNetDateTimeStyleId>;
 }
 
-// @public (undocumented)
+// @public
 export enum DotNetDateTimeStyleId {
-    // (undocumented)
     AdjustToUniversal = "AdjustToUniversal",
-    // (undocumented)
     AllowInnerWhite = "AllowInnerWhite",
-    // (undocumented)
     AllowLeadingWhite = "AllowLeadingWhite",
-    // (undocumented)
     AllowTrailingWhite = "AllowTrailingWhite",
-    // (undocumented)
     AssumeLocal = "AssumeLocal",
-    // (undocumented)
     AssumeUniversal = "AssumeUniversal",
-    // (undocumented)
     NoCurrentDateDefault = "NoCurrentDateDefault",
-    // (undocumented)
     RoundTripKind = "RoundTripKind"
 }
 
 // Warning: (ae-internal-missing-underscore) The name "DotNetDateTimeStyles" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
+// @internal
 export const DotNetDateTimeStyles: {
     none: Set<DotNetDateTimeStyleId>;
     allowWhiteSpaces: Set<DotNetDateTimeStyleId>;
 };
 
-// @public (undocumented)
+// @public
 export type DotNetDateTimeStyleSet = Set<DotNetDateTimeStyleId>;
 
 // Warning: (ae-internal-missing-underscore) The name "DotNetDateTimeStylesInfo" should be prefixed with an underscore because the declaration is marked as @internal
@@ -69,82 +55,54 @@ export class DotNetDateTimeStylesInfo {
     static tryFromXmlValue(value: string): Result<DotNetDateTimeStyleSet>;
 }
 
-// @public (undocumented)
+// @public
 export class DotNetDecimalFormatter extends DotNetNumberFormatter {
-    // (undocumented)
     toString(value: number): string;
-    // (undocumented)
     tryFromString(strValue: string): Result<number>;
 }
 
-// @public (undocumented)
+// @public
 export class DotNetFloatFormatter extends DotNetNumberFormatter {
-    // (undocumented)
     toString(value: number): string;
-    // (undocumented)
     tryFromString(strValue: string): Result<number>;
 }
 
-// @public (undocumented)
+// @public
 export class DotNetIntegerFormatter extends DotNetNumberFormatter {
-    // (undocumented)
     toString(value: bigint): string;
-    // (undocumented)
     tryFromString(strValue: string): Result<bigint>;
 }
 
-// @public (undocumented)
+// @public
 export class DotNetLocaleSettings {
     constructor(localeName?: string);
-    // (undocumented)
     boolToStr(value: boolean): string;
-    // (undocumented)
     static create(localeName: string): DotNetLocaleSettings;
-    // (undocumented)
     static createInvariant(): DotNetLocaleSettings;
-    // (undocumented)
     readonly currencyString: string;
-    // (undocumented)
     static readonly current: DotNetLocaleSettings;
-    // (undocumented)
     readonly dateSeparator: string;
-    // (undocumented)
     dateToStr(value: Date, options?: Intl.DateTimeFormatOptions): string;
-    // (undocumented)
     readonly decimalSeparator: string;
-    // (undocumented)
     readonly defaultCurrency: Intl.NumberFormat;
-    // (undocumented)
     readonly defaultDecimal: Intl.NumberFormat;
-    // (undocumented)
     readonly defaultFloat: Intl.NumberFormat;
-    // (undocumented)
     readonly id: string;
-    // (undocumented)
     static readonly invariant: DotNetLocaleSettings;
-    // (undocumented)
     readonly name: string;
-    // (undocumented)
     numberToStr(value: number | bigint, options?: Intl.NumberFormatOptions): string;
-    // (undocumented)
     readonly thousandSeparator: string;
-    // (undocumented)
     readonly timeSeparator: string;
     toLowerChar(char: string): string;
     toUpperChar(char: string): string;
-    // (undocumented)
     tryStrToBigInt(value: string): Result<bigint>;
-    // (undocumented)
     tryStrToBool(value: string): Result<boolean>;
-    // (undocumented)
     tryStrToDate(value: string): Result<Date>;
-    // (undocumented)
     tryStrToInt(value: string): Result<number>;
-    // (undocumented)
     tryStrToNumber(value: string): Result<number>;
 }
 
-// @public (undocumented)
+// @public
 export class DotNetNumberFormatter {
     // (undocumented)
     protected format: string;
@@ -156,19 +114,15 @@ export class DotNetNumberFormatter {
     hasDigitChar(value: string): boolean;
     // (undocumented)
     hasExponentChar(value: string): boolean;
-    // (undocumented)
     localeSettings: DotNetLocaleSettings;
-    // (undocumented)
     parseErrorText: string;
     // (undocumented)
     protected setParseErrorText(value: string): false;
-    // (undocumented)
     styles: DotNetNumberStyleSet;
     // (undocumented)
     protected trimTrailingPadZeros(value: string): string;
     // (undocumented)
     static tryHexToInt64(hex: string): Result<bigint>;
-    // (undocumented)
     trySetFormat(value: string): Result<void>;
     // (undocumented)
     protected unstyleNumberString(value: string): Result<{
@@ -177,33 +131,23 @@ export class DotNetNumberFormatter {
     }>;
 }
 
-// @public (undocumented)
+// @public
 export enum DotNetNumberStyleId {
-    // (undocumented)
     AllowCurrencySymbol = "AllowCurrencySymbol",
-    // (undocumented)
     AllowDecimalPoint = "AllowDecimalPoint",
-    // (undocumented)
     AllowExponent = "AllowExponent",
-    // (undocumented)
     AllowHexSpecifier = "AllowHexSpecifier",
-    // (undocumented)
     AllowLeadingSign = "AllowLeadingSign",
-    // (undocumented)
     AllowLeadingWhite = "AllowLeadingWhite",
-    // (undocumented)
     AllowParentheses = "AllowParentheses",
-    // (undocumented)
     AllowThousands = "AllowThousands",
-    // (undocumented)
     AllowTrailingSign = "AllowTrailingSign",
-    // (undocumented)
     AllowTrailingWhite = "AllowTrailingWhite"
 }
 
 // Warning: (ae-internal-missing-underscore) The name "DotNetNumberStyles" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
+// @internal
 export const DotNetNumberStyles: {
     none: Set<DotNetNumberStyleId>;
     any: Set<DotNetNumberStyleId>;
@@ -214,7 +158,7 @@ export const DotNetNumberStyles: {
     number: Set<DotNetNumberStyleId>;
 };
 
-// @public (undocumented)
+// @public
 export type DotNetNumberStyleSet = Set<DotNetNumberStyleId>;
 
 // Warning: (ae-internal-missing-underscore) The name "DotNetNumberStylesInfo" should be prefixed with an underscore because the declaration is marked as @internal
