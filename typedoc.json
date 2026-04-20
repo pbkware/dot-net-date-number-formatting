@@ -1,10 +1,13 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["./src/code/index.ts"],
+  "entryPoints": ["./src/code"],
+  "entryPointStrategy": "expand",
+  "alwaysCreateEntryPointModule": false,
+  "exclude": ["./src/code/index.ts"],
   "out": "./docs",
   "name": "dot-net-date-number-formatting",
   "includeVersion": true,
-  "readme": "none",
+  "readme": "README.md",
   "projectDocuments": [
     "./docs-src/guides/getting-started.md",
     "./docs-src/guides/datetime-formatting.md",
@@ -13,21 +16,7 @@
     "./docs-src/guides/locales.md",
     "./docs-src/guides/advanced-examples.md"
   ],
-  "categorizeByGroup": true,
-  "categoryOrder": [
-    "DateTime Formatting",
-    "Numeric Formatting",
-    "Locale Settings",
-    "Number Styles",
-    "DateTime Styles",
-    "*"
-  ],
-  "navigation": {
-    "includeCategories": true,
-    "includeGroups": true
-  },
-  "sort": ["kind", "instance-first", "alphabetical"],
-  "exclude": ["**/*.test.ts", "**/node_modules/**"],
+  "router": "structure-dir",
   "excludePrivate": true,
   "excludeProtected": false,
   "excludeInternal": true,
@@ -36,5 +25,11 @@
   "githubPages": true,
   "hideGenerator": true,
   "searchInComments": true,
-  "searchInDocuments": true
+  "searchInDocuments": true,
+  "hostedBaseUrl": "https://pbkware.github.io/dot-net-date-number-formatting/",
+  "navigationLinks": {
+    "GitHub": "https://github.com/pbkware/dot-net-date-number-formatting",
+    "NPM": "https://www.npmjs.com/package/@pbkware/dot-net-date-number-formatting"
+    // "Sponsors": "https://pbkware.github.io/dot-net-date-number-formatting/Overview/Sponsors/",
+  }
 }

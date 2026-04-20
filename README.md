@@ -70,15 +70,7 @@ if (result.isOk()) {
 
 ## Documentation
 
-Comprehensive documentation is available:
-
-- **[API Documentation](./docs)** - Full API reference with examples
-- **[Getting Started Guide](./docs-src/guides/getting-started.md)** - Introduction and basic usage
-- **[DateTime Formatting](./docs-src/guides/datetime-formatting.md)** - Standard and custom date/time formats
-- **[Numeric Formatting](./docs-src/guides/numeric-formatting.md)** - Standard and custom number formats
-- **[Number Parsing](./docs-src/guides/number-parsing.md)** - Parsing with style flags
-- **[Locale Settings](./docs-src/guides/locales.md)** - Culture-specific formatting
-- **[Advanced Examples](./docs-src/guides/advanced-examples.md)** - Real-world usage patterns
+Comprehensive documentation is available at library [website](https://pbkware.github.io/dot-net-date-number-formatting/)
 
 ## Use Cases
 
@@ -87,6 +79,7 @@ Comprehensive documentation is available:
 - **Multi-locale applications** - Support users in different regions with locale-aware formatting
 - **Financial applications** - Format currency and numeric values with precise control
 - **Report generation** - Create formatted reports with .NET-compatible output
+- **Round trip formatting/parsing** - Formatting and then parsing a value with the same format string will return the same value.
 
 ## Features
 
@@ -123,10 +116,6 @@ Comprehensive documentation is available:
 
 See [LICENSE](./LICENSE) file for details.
 
-## Contributing
-
-Contributions are welcome! Please ensure all tests pass before submitting pull requests.
-
 ```bash
 # Install dependencies
 npm install
@@ -138,9 +127,17 @@ npm test
 npm run build
 
 # Generate documentation
-npm run docs
+npm run docs:build
 ```
 
 ## Support
 
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/pbkware/dot-net-date-number-formatting).
+
+## History
+
+This library was created by porting the relevant portions of the Delphi library [TFieldedText](https://sourceforge.net/projects/tfieldedtext/) (at [SourceForge](https://sourceforge.net/projects/tfieldedtext/)) (Note that the commit attributions are incorrect in TFieldedText - they should be attributed to Paul Klink.)  The porting and documentation was carried out with AI (GitHub co-pilot).
+
+## Contributing
+
+Contributions are welcome! Please ensure all tests pass before submitting pull requests.

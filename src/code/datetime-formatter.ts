@@ -337,6 +337,8 @@ export class DotNetDateTimeFormatter {
   /**
    * Sets the format string to use for formatting dates and times.
    *
+   * The format string is tokenized to confirm validity and to optimize formatting/parsing operations.
+   *
    * @param value - A standard format string (single character like 'd', 'F', 'o') or
    *                custom format string (e.g., "yyyy-MM-dd HH:mm:ss").
    * @returns A Result indicating success or containing an error message if the format string is invalid.

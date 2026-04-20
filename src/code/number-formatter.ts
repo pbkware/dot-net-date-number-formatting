@@ -99,6 +99,8 @@ export class DotNetNumberFormatter {
   /**
    * Sets the format string to use for formatting numbers.
    *
+   * The format string is tokenized to confirm validity and to optimize formatting/parsing operations.
+   *
    * @param value - A standard format string (e.g., "C", "N2", "E3") or custom format string (e.g., "#,##0.00").
    * @returns A Result indicating success or containing an error message if the format string is invalid.
    *

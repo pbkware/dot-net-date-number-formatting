@@ -1,7 +1,7 @@
 {
   "name": "dot-net-date-number-formatting",
+  "description": "DotNet date and number formatting library",
   "version": "0.0.2",
-  "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -10,6 +10,30 @@
       "import": "./dist/code/index.js"
     }
   },
+  "readmeFilename": "README.md",
+  "license": "MIT",
+  "homepage": "https://pbkware.github.io/dot-net-date-number-formatting/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pbkware/dot-net-date-number-formatting.git"
+  },
+  "contributors": [
+    "Paul Klink (https://paul.klink.au)"
+  ],
+  "keywords": [
+    "dotnet",
+    "date",
+    "number",
+    "formatting",
+    "parsing",
+    "locales"
+  ],
+  "files": [
+    "dist/**/*",
+    "src/**/*.ts",
+    "src/**/*.json",
+    "src/**/*.css"
+  ],
   "scripts": {
     "test": "vitest run",
     "test:ci": "vitest run --reporter=verbose",
@@ -19,13 +43,16 @@
     "rollup": "npx api-extractor run --local --verbose",
     "api": "npm run build && npm run rollup",
     "dist": "npm run clean && npm run api",
-    "docs": "typedoc",
+    "docs:build": "typedoc",
     "docs:watch": "typedoc --watch",
+    "docs:serve": "lws --stack lws-static -d docs",
     "publish": "npm publish --access=public"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.58.2",
     "del-cli": "^7.0.0",
+    "lws": "^4.2.0",
+    "lws-static": "^3.1.1",
     "typedoc": "^0.28.19",
     "typescript": "^6.0.2",
     "vitest": "^4.1.4"
