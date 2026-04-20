@@ -2,6 +2,7 @@
 /dist
 /lib
 /temp
+/docs
 /.env
 /.env.local
 /.env.development
@@ -23,3 +24,4 @@
 /.babelrc
 /.stylelintrc
 *.tsbuildinfo
+README.old.md

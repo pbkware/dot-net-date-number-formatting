@@ -1,25 +1,89 @@
 import { CommaText, Err, Ok, Result } from "@pbkware/js-utils";
 
-/** @public */
+/**
+ * Individual style flags that control which number formats are allowed during parsing.
+ *
+ * These flags can be combined to create custom parsing behavior.
+ *
+ * @example
+ * ```typescript
+ * // Combine individual flags
+ * formatter.styles = new Set([
+ *   DotNetNumberStyleId.AllowLeadingSign,
+ *   DotNetNumberStyleId.AllowDecimalPoint,
+ *   DotNetNumberStyleId.AllowThousands
+ * ]);
+ * ```
+ *
+ * @public
+ * @category Number Styles
+ */
 export enum DotNetNumberStyleId {
+  /** Allow currency symbol in the number string. */
   AllowCurrencySymbol = "AllowCurrencySymbol",
+
+  /** Allow decimal point in the number string. */
   AllowDecimalPoint = "AllowDecimalPoint",
+
+  /** Allow exponential notation (e.g., 1.23e+10). */
   AllowExponent = "AllowExponent",
+
+  /** Parse the number as hexadecimal. */
   AllowHexSpecifier = "AllowHexSpecifier",
+
+  /** Allow a leading plus (+) or minus (-) sign. */
   AllowLeadingSign = "AllowLeadingSign",
+
+  /** Allow leading whitespace characters. */
   AllowLeadingWhite = "AllowLeadingWhite",
+
+  /** Allow parentheses to indicate negative numbers. */
   AllowParentheses = "AllowParentheses",
+
+  /** Allow thousands separator characters. */
   AllowThousands = "AllowThousands",
+
+  /** Allow a trailing plus (+) or minus (-) sign. */
   AllowTrailingSign = "AllowTrailingSign",
+
+  /** Allow trailing whitespace characters. */
   AllowTrailingWhite = "AllowTrailingWhite",
 }
 
-/** @public */
+/**
+ * A set of {@link DotNetNumberStyleId} flags.
+ *
+ * @public
+ * @category Number Styles
+ */
 export type DotNetNumberStyleSet = Set<DotNetNumberStyleId>;
 
-/** @internal */
+/**
+ * Predefined number style combinations for common parsing scenarios.
+ *
+ * @example
+ * ```typescript
+ * // Use predefined style
+ * formatter.styles = DotNetNumberStyles.number;
+ * formatter.tryFromString('1,234.56');  // Parses successfully
+ *
+ * // Use currency style
+ * formatter.styles = DotNetNumberStyles.currency;
+ * formatter.tryFromString('$1,234.56');  // Parses successfully
+ * ```
+ *
+ * @internal
+ * @category Number Styles
+ */
 export const DotNetNumberStyles = {
+  /** No styles - only basic digits allowed. */
   none: new Set<DotNetNumberStyleId>(),
+
+  /**
+   * All styles allowed (except hex).
+   * Includes: AllowCurrencySymbol, AllowDecimalPoint, AllowExponent, AllowLeadingSign,
+   * AllowLeadingWhite, AllowParentheses, AllowThousands, AllowTrailingSign, AllowTrailingWhite.
+   */
   any: new Set<DotNetNumberStyleId>([
     DotNetNumberStyleId.AllowCurrencySymbol,
     DotNetNumberStyleId.AllowDecimalPoint,
@@ -31,6 +95,12 @@ export const DotNetNumberStyles = {
     DotNetNumberStyleId.AllowTrailingSign,
     DotNetNumberStyleId.AllowTrailingWhite,
   ]),
+
+  /**
+   * Currency parsing style.
+   * Includes: AllowCurrencySymbol, AllowDecimalPoint, AllowLeadingSign, AllowLeadingWhite,
+   * AllowParentheses, AllowThousands, AllowTrailingSign, AllowTrailingWhite.
+   */
   currency: new Set<DotNetNumberStyleId>([
     DotNetNumberStyleId.AllowCurrencySymbol,
     DotNetNumberStyleId.AllowDecimalPoint,
@@ -41,6 +111,12 @@ export const DotNetNumberStyles = {
     DotNetNumberStyleId.AllowTrailingSign,
     DotNetNumberStyleId.AllowTrailingWhite,
   ]),
+
+  /**
+   * Floating-point parsing style.
+   * Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign,
+   * AllowDecimalPoint, AllowExponent.
+   */
   float: new Set<DotNetNumberStyleId>([
     DotNetNumberStyleId.AllowLeadingWhite,
     DotNetNumberStyleId.AllowTrailingWhite,
@@ -48,16 +124,32 @@ export const DotNetNumberStyles = {
     DotNetNumberStyleId.AllowDecimalPoint,
     DotNetNumberStyleId.AllowExponent,
   ]),
+
+  /**
+   * Hexadecimal parsing style.
+   * Includes: AllowLeadingWhite, AllowTrailingWhite, AllowHexSpecifier.
+   */
   hexNumber: new Set<DotNetNumberStyleId>([
     DotNetNumberStyleId.AllowLeadingWhite,
     DotNetNumberStyleId.AllowTrailingWhite,
     DotNetNumberStyleId.AllowHexSpecifier,
   ]),
+
+  /**
+   * Basic integer parsing style.
+   * Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign.
+   */
   integer: new Set<DotNetNumberStyleId>([
     DotNetNumberStyleId.AllowLeadingWhite,
     DotNetNumberStyleId.AllowTrailingWhite,
     DotNetNumberStyleId.AllowLeadingSign,
   ]),
+
+  /**
+   * Standard number parsing style.
+   * Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign, AllowTrailingSign,
+   * AllowDecimalPoint, AllowThousands.
+   */
   number: new Set<DotNetNumberStyleId>([
     DotNetNumberStyleId.AllowLeadingWhite,
     DotNetNumberStyleId.AllowTrailingWhite,

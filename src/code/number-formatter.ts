@@ -35,15 +35,60 @@ interface FormatSection {
   scale: number; // Number of ,, dividers
 }
 
-/** @public */
+/**
+ * Base class for formatting and parsing numbers using .NET-compatible format strings.
+ *
+ * Supports both standard format strings (C, D, E, F, G, N, P, R, X, B) and custom format strings
+ * with fine-grained control over digit placeholders, separators, and sections.
+ *
+ * @remarks
+ * This is a base class - use {@link DotNetIntegerFormatter}, {@link DotNetFloatFormatter},
+ * or {@link DotNetDecimalFormatter} for specific number types.
+ *
+ * @example
+ * ```typescript
+ * // Use derived classes instead
+ * const formatter = new DotNetFloatFormatter();
+ * formatter.localeSettings = DotNetLocaleSettings.createInvariant();
+ * formatter.trySetFormat('C2');
+ * console.log(formatter.toString(1234.56));  // "$1,234.56"
+ * ```
+ *
+ * @public
+ * @category Numeric Formatting
+ */
 export class DotNetNumberFormatter {
   protected format = "";
   private formatIsStandard = false;
   private precision = 0;
   private sections: FormatSection[] = [];
 
+  /**
+   * The set of {@link DotNetNumberStyleId} flags that control which number formats are allowed during parsing.
+   *
+   * @example
+   * ```typescript
+   * // Use predefined styles
+   * formatter.styles = DotNetNumberStyles.number;
+   *
+   * // Or combine individual flags
+   * formatter.styles = new Set([
+   *   DotNetNumberStyleId.AllowLeadingSign,
+   *   DotNetNumberStyleId.AllowDecimalPoint
+   * ]);
+   * ```
+   */
   styles: DotNetNumberStyleSet = new Set(DotNetNumberStyles.number);
+
+  /**
+   * The locale settings that determine decimal/thousands separators and other culture-specific formatting.
+   */
   localeSettings = DotNetLocaleSettings.current;
+
+  /**
+   * Contains the error message from the last failed operation.
+   * Check this property if {@link trySetFormat} or parsing methods return an error.
+   */
   parseErrorText = "";
 
   protected setParseErrorText(value: string): false {
@@ -51,6 +96,27 @@ export class DotNetNumberFormatter {
     return false;
   }
 
+  /**
+   * Sets the format string to use for formatting numbers.
+   *
+   * @param value - A standard format string (e.g., "C", "N2", "E3") or custom format string (e.g., "#,##0.00").
+   * @returns A Result indicating success or containing an error message if the format string is invalid.
+   *
+   * @example
+   * ```typescript
+   * // Standard format
+   * formatter.trySetFormat('C2');  // Currency with 2 decimal places
+   *
+   * // Custom format
+   * formatter.trySetFormat('#,##0.00');  // Number with thousands separator
+   *
+   * // Check for errors
+   * const result = formatter.trySetFormat('INVALID');
+   * if (result.isErr()) {
+   *   console.error(result.error);
+   * }
+   * ```
+   */
   trySetFormat(value: string): Result<void> {
     if (value.length === 0) {
       return new Err("Format string cannot be empty");
@@ -732,8 +798,43 @@ export class DotNetNumberFormatter {
   }
 }
 
-/** @public */
+/**
+ * Formatter for integer values (bigint) using .NET-compatible format strings.
+ *
+ * Supports formatting integers with standard format strings like D (decimal), X (hexadecimal),
+ * B (binary), and custom format strings.
+ *
+ * @example
+ * ```typescript
+ * const formatter = new DotNetIntegerFormatter();
+ * formatter.localeSettings = DotNetLocaleSettings.createInvariant();
+ *
+ * // Decimal with padding
+ * formatter.trySetFormat('D8');
+ * console.log(formatter.toString(123n));  // "00000123"
+ *
+ * // Hexadecimal
+ * formatter.trySetFormat('X');
+ * console.log(formatter.toString(255n));  // "FF"
+ *
+ * // Parsing
+ * formatter.styles = DotNetNumberStyles.integer;
+ * const result = formatter.tryFromString('-12345');
+ * if (result.isOk()) {
+ *   console.log(result.value);  // -12345n
+ * }
+ * ```
+ *
+ * @public
+ * @category Numeric Formatting
+ */
 export class DotNetIntegerFormatter extends DotNetNumberFormatter {
+  /**
+   * Formats a bigint value using the current format string.
+   *
+   * @param value - The bigint value to format.
+   * @returns The formatted number string.
+   */
   toString(value: bigint): string {
     if (this.format === "") {
       return value.toString();
@@ -741,6 +842,21 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
     return this.formatNumber(value, false);
   }
 
+  /**
+   * Attempts to parse a bigint value from a string using the current parsing styles.
+   *
+   * @param strValue - The string to parse.
+   * @returns A Result containing the parsed bigint if successful, or an error if parsing fails.
+   *
+   * @example
+   * ```typescript
+   * formatter.styles = DotNetNumberStyles.integer;
+   * const result = formatter.tryFromString('  -123  ');
+   * if (result.isOk()) {
+   *   console.log(result.value);  // -123n
+   * }
+   * ```
+   */
   tryFromString(strValue: string): Result<bigint> {
     const unstyled = this.unstyleNumberString(strValue);
     if (unstyled.isErr()) {
@@ -809,8 +925,47 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
   }
 }
 
-/** @public */
+/**
+ * Formatter for floating-point numbers using .NET-compatible format strings.
+ *
+ * Supports all standard numeric format strings (C, D, E, F, G, N, P, R, X, B) and
+ * custom format strings with digit placeholders, separators, and sections.
+ *
+ * @example
+ * ```typescript
+ * const formatter = new DotNetFloatFormatter();
+ * formatter.localeSettings = DotNetLocaleSettings.createInvariant();
+ *
+ * // Currency format
+ * formatter.trySetFormat('C2');
+ * console.log(formatter.toString(1234.56));  // "$1,234.56"
+ *
+ * // Percentage format
+ * formatter.trySetFormat('P1');
+ * console.log(formatter.toString(0.1234));  // "12.3%"
+ *
+ * // Custom format with sections
+ * formatter.trySetFormat('#,##0.00;(#,##0.00)');
+ * console.log(formatter.toString(-1234.56));  // "(1,234.56)"
+ *
+ * // Parsing
+ * formatter.styles = DotNetNumberStyles.number;
+ * const result = formatter.tryFromString('1,234.56');
+ * if (result.isOk()) {
+ *   console.log(result.value);  // 1234.56
+ * }
+ * ```
+ *
+ * @public
+ * @category Numeric Formatting
+ */
 export class DotNetFloatFormatter extends DotNetNumberFormatter {
+  /**
+   * Formats a number using the current format string.
+   *
+   * @param value - The number to format.
+   * @returns The formatted number string.
+   */
   toString(value: number): string {
     if (this.format === "") {
       return this.localeSettings.defaultFloat.format(value);
@@ -818,6 +973,21 @@ export class DotNetFloatFormatter extends DotNetNumberFormatter {
     return this.formatNumber(value, true);
   }
 
+  /**
+   * Attempts to parse a number from a string using the current parsing styles.
+   *
+   * @param strValue - The string to parse.
+   * @returns A Result containing the parsed number if successful, or an error if parsing fails.
+   *
+   * @example
+   * ```typescript
+   * formatter.styles = DotNetNumberStyles.number;
+   * const result = formatter.tryFromString('  1,234.56  ');
+   * if (result.isOk()) {
+   *   console.log(result.value);  // 1234.56
+   * }
+   * ```
+   */
   tryFromString(strValue: string): Result<number> {
     const unstyled = this.unstyleNumberString(strValue);
     if (unstyled.isErr()) {
@@ -876,8 +1046,36 @@ export class DotNetFloatFormatter extends DotNetNumberFormatter {
   }
 }
 
-/** @public */
+/**
+ * Formatter for decimal numbers with high precision using .NET-compatible format strings.
+ *
+ * Similar to {@link DotNetFloatFormatter} but with different default precision behavior.
+ * When no format is specified, trailing zeros after the decimal point are automatically trimmed.
+ *
+ * @example
+ * ```typescript
+ * const formatter = new DotNetDecimalFormatter();
+ * formatter.localeSettings = DotNetLocaleSettings.createInvariant();
+ *
+ * // High precision formatting
+ * formatter.trySetFormat('F6');
+ * console.log(formatter.toString(123.456));  // "123.456000"
+ *
+ * // Default behavior (trims trailing zeros)
+ * console.log(formatter.toString(123.400));  // "123.4"
+ * ```
+ *
+ * @public
+ * @category Numeric Formatting
+ */
 export class DotNetDecimalFormatter extends DotNetNumberFormatter {
+  /**
+   * Formats a number using the current format string.
+   * When no format is specified, trailing zeros are trimmed.
+   *
+   * @param value - The number to format.
+   * @returns The formatted number string.
+   */
   toString(value: number): string {
     if (this.format === "") {
       return this.trimTrailingPadZeros(
@@ -887,6 +1085,12 @@ export class DotNetDecimalFormatter extends DotNetNumberFormatter {
     return this.formatNumber(value, true);
   }
 
+  /**
+   * Attempts to parse a number from a string using the current parsing styles.
+   *
+   * @param strValue - The string to parse.
+   * @returns A Result containing the parsed number if successful, or an error if parsing fails.
+   */
   tryFromString(strValue: string): Result<number> {
     const doubleFormatter = new DotNetFloatFormatter();
     doubleFormatter.styles = this.styles;

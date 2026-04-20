@@ -1,23 +1,70 @@
 import { CommaText, Err, Ok, Result } from "@pbkware/js-utils";
 
-/** @public */
+/**
+ * Individual style flags that control date/time parsing behavior.
+ *
+ * These flags can be combined to create custom parsing rules.
+ *
+ * @example
+ * ```typescript
+ * // Combine individual flags
+ * formatter.styles = new Set([
+ *   DotNetDateTimeStyleId.AllowLeadingWhite,
+ *   DotNetDateTimeStyleId.AllowTrailingWhite
+ * ]);
+ * ```
+ *
+ * @public
+ * @category DateTime Styles
+ */
 export enum DotNetDateTimeStyleId {
+  /** Allow leading whitespace characters. */
   AllowLeadingWhite = "AllowLeadingWhite",
+
+  /** Allow trailing whitespace characters. */
   AllowTrailingWhite = "AllowTrailingWhite",
+
+  /** Allow whitespace within the date/time string. */
   AllowInnerWhite = "AllowInnerWhite",
+
+  /** Do not use current date for missing date components. */
   NoCurrentDateDefault = "NoCurrentDateDefault",
+
+  /** Adjust date/time to UTC (not implemented). */
   AdjustToUniversal = "AdjustToUniversal",
+
+  /** Assume local time zone if not specified (not implemented). */
   AssumeLocal = "AssumeLocal",
+
+  /** Assume UTC time zone if not specified (not implemented). */
   AssumeUniversal = "AssumeUniversal",
+
+  /** Preserve DateTimeKind when parsing (not implemented). */
   RoundTripKind = "RoundTripKind",
 }
 
-/** @public */
+/**
+ * A set of {@link DotNetDateTimeStyleId} flags.
+ *
+ * @public
+ * @category DateTime Styles
+ */
 export type DotNetDateTimeStyleSet = Set<DotNetDateTimeStyleId>;
 
-/** @internal */
+/**
+ * Predefined date/time style combinations for common parsing scenarios.
+ *
+ * @internal
+ * @category DateTime Styles
+ */
 export const DotNetDateTimeStyles = {
+  /** No styles - strict parsing. */
   none: new Set<DotNetDateTimeStyleId>(),
+
+  /**
+   * Allow whitespace in date/time strings.
+   * Includes: AllowLeadingWhite, AllowTrailingWhite, AllowInnerWhite.
+   */
   allowWhiteSpaces: new Set<DotNetDateTimeStyleId>([
     DotNetDateTimeStyleId.AllowLeadingWhite,
     DotNetDateTimeStyleId.AllowTrailingWhite,

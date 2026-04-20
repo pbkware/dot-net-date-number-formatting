@@ -1,0 +1,40 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/code/index.ts"],
+  "out": "./docs",
+  "name": "dot-net-date-number-formatting",
+  "includeVersion": true,
+  "readme": "none",
+  "projectDocuments": [
+    "./docs-src/guides/getting-started.md",
+    "./docs-src/guides/datetime-formatting.md",
+    "./docs-src/guides/numeric-formatting.md",
+    "./docs-src/guides/number-parsing.md",
+    "./docs-src/guides/locales.md",
+    "./docs-src/guides/advanced-examples.md"
+  ],
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "DateTime Formatting",
+    "Numeric Formatting",
+    "Locale Settings",
+    "Number Styles",
+    "DateTime Styles",
+    "*"
+  ],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "sort": ["kind", "instance-first", "alphabetical"],
+  "exclude": ["**/*.test.ts", "**/node_modules/**"],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "skipErrorChecking": false,
+  "cleanOutputDir": true,
+  "githubPages": true,
+  "hideGenerator": true,
+  "searchInComments": true,
+  "searchInDocuments": true
+}

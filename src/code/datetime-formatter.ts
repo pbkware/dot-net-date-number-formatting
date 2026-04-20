@@ -269,8 +269,42 @@ function tokenizeCustom(format: string): Result<Element[]> {
   return new Ok(elements);
 }
 
-/** @public */
+/**
+ * Formatter for dates and times using .NET-compatible format strings.
+ *
+ * Supports both standard format strings (d, D, f, F, g, G, M, O, s, t, T, u, Y) and
+ * custom format strings with specific date/time components (yyyy, MM, dd, HH, mm, ss, etc.).
+ *
+ * @example
+ * ```typescript
+ * const formatter = new DotNetDateTimeFormatter();
+ * formatter.localeSettings = DotNetLocaleSettings.createInvariant();
+ *
+ * // Standard format strings
+ * formatter.trySetFormat('d');  // Short date
+ * console.log(formatter.toString(new Date(2024, 6, 5)));  // "7/5/2024"
+ *
+ * formatter.trySetFormat('F');  // Full date/time
+ * console.log(formatter.toString(new Date(2024, 6, 5, 14, 30, 0)));
+ * // "Friday, July 5, 2024 2:30:00 PM"
+ *
+ * // Custom format strings
+ * formatter.trySetFormat('yyyy-MM-dd');
+ * console.log(formatter.toString(new Date(2024, 6, 5)));  // "2024-07-05"
+ *
+ * formatter.trySetFormat("dddd, MMMM d 'at' h:mm tt");
+ * console.log(formatter.toString(new Date(2024, 6, 5, 14, 30, 0)));
+ * // "Friday, July 5 at 2:30 PM"
+ * ```
+ *
+ * @public
+ * @category DateTime Formatting
+ */
 export class DotNetDateTimeFormatter {
+  /**
+   * Set of date/time style flags that are not currently supported by this implementation.
+   * Operations using these styles will fail.
+   */
   static readonly unsupportedStyles = new Set<DotNetDateTimeStyleId>([
     DotNetDateTimeStyleId.AdjustToUniversal,
     DotNetDateTimeStyleId.AssumeLocal,
@@ -279,14 +313,49 @@ export class DotNetDateTimeFormatter {
   ]);
 
   private format = "";
+
+  /**
+   * The set of {@link DotNetDateTimeStyleId} flags that control date/time parsing behavior.
+   * Currently only used for future parsing functionality.
+   */
   styles: DotNetDateTimeStyleSet = new Set(DotNetDateTimeStyles.none);
+
+  /**
+   * The locale settings that determine date/time separators and formatting conventions.
+   */
   localeSettings = DotNetLocaleSettings.current;
 
   private formatIsStandard = false;
   private elements: Element[] = [];
 
+  /**
+   * Contains the error message from the last failed operation.
+   * Check this property if {@link trySetFormat} returns an error.
+   */
   parseErrorText = "";
 
+  /**
+   * Sets the format string to use for formatting dates and times.
+   *
+   * @param value - A standard format string (single character like 'd', 'F', 'o') or
+   *                custom format string (e.g., "yyyy-MM-dd HH:mm:ss").
+   * @returns A Result indicating success or containing an error message if the format string is invalid.
+   *
+   * @example
+   * ```typescript
+   * // Standard format
+   * formatter.trySetFormat('d');  // Short date
+   *
+   * // Custom format
+   * formatter.trySetFormat('yyyy-MM-dd HH:mm:ss');
+   *
+   * // Check for errors
+   * const result = formatter.trySetFormat('');
+   * if (result.isErr()) {
+   *   console.error(result.error);  // "Format text cannot be empty"
+   * }
+   * ```
+   */
   trySetFormat(value: string): Result<void> {
     if (value.length === 0) {
       return new Err("Format text cannot be empty");
@@ -309,6 +378,23 @@ export class DotNetDateTimeFormatter {
     return new Ok(undefined);
   }
 
+  /**
+   * Formats a Date using the current format string.
+   *
+   * @param value - The Date to format.
+   * @returns The formatted date/time string.
+   *
+   * @example
+   * ```typescript
+   * const date = new Date(2024, 6, 5, 14, 30, 45);
+   *
+   * formatter.trySetFormat('d');
+   * console.log(formatter.toString(date));  // "7/5/2024"
+   *
+   * formatter.trySetFormat('yyyy-MM-dd HH:mm:ss');
+   * console.log(formatter.toString(date));  // "2024-07-05 14:30:45"
+   * ```
+   */
   toString(value: Date): string {
     if (this.formatIsStandard) {
       return formatStandard(this.format, value, this.localeSettings.name);
