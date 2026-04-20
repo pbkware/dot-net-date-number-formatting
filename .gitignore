@@ -24,4 +24,5 @@
 /.babelrc
 /.stylelintrc
 *.tsbuildinfo
+*.tgz
 README.old.md
