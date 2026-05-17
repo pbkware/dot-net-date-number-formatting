@@ -10,50 +10,45 @@ import { Result } from '@pbkware/js-utils';
 export class DotNetDateTimeFormatter {
     localeSettings: DotNetLocaleSettings;
     parseErrorText: string;
-    styles: DotNetDateTimeStyleSet;
+    styles: DotNetDateTimeStyles;
     toString(value: Date): string;
     // (undocumented)
     tryFromString(strValue: string): Result<Date>;
     trySetFormat(value: string): Result<void>;
-    static readonly unsupportedStyles: Set<DotNetDateTimeStyleId>;
+    static readonly unsupportedStyles: (16 | 32 | 64 | 128)[];
 }
 
 // @public
-export enum DotNetDateTimeStyleId {
-    AdjustToUniversal = "AdjustToUniversal",
-    AllowInnerWhite = "AllowInnerWhite",
-    AllowLeadingWhite = "AllowLeadingWhite",
-    AllowTrailingWhite = "AllowTrailingWhite",
-    AssumeLocal = "AssumeLocal",
-    AssumeUniversal = "AssumeUniversal",
-    NoCurrentDateDefault = "NoCurrentDateDefault",
-    RoundTripKind = "RoundTripKind"
-}
-
-// Warning: (ae-internal-missing-underscore) The name "DotNetDateTimeStyles" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const DotNetDateTimeStyles: {
-    none: Set<DotNetDateTimeStyleId>;
-    allowWhiteSpaces: Set<DotNetDateTimeStyleId>;
+export const DotNetDateTimeStyleFlags: {
+    readonly allowLeadingWhite: 1;
+    readonly allowTrailingWhite: 2;
+    readonly allowInnerWhite: 4;
+    readonly noCurrentDateDefault: 8;
+    readonly adjustToUniversal: 16;
+    readonly assumeLocal: 32;
+    readonly assumeUniversal: 64;
+    readonly roundTripKind: 128;
 };
 
 // @public
-export type DotNetDateTimeStyleSet = Set<DotNetDateTimeStyleId>;
+export type DotNetDateTimeStyleFlags = (typeof DotNetDateTimeStyleFlags)[keyof typeof DotNetDateTimeStyleFlags];
 
-// Warning: (ae-internal-missing-underscore) The name "DotNetDateTimeStylesInfo" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class DotNetDateTimeStylesInfo {
-    // (undocumented)
-    static toString(styles: DotNetDateTimeStyleSet): string;
-    // (undocumented)
-    static toXmlValue(styles: DotNetDateTimeStyleSet): string;
-    // (undocumented)
-    static tryFromString(value: string): Result<DotNetDateTimeStyleSet>;
-    // (undocumented)
-    static tryFromXmlValue(value: string): Result<DotNetDateTimeStyleSet>;
-}
+// @public
+export const DotNetDateTimeStyles: {
+    readonly none: 0;
+    readonly allowLeadingWhite: 1;
+    readonly allowTrailingWhite: 2;
+    readonly allowInnerWhite: 4;
+    readonly allowWhiteSpaces: number;
+    readonly noCurrentDateDefault: 8;
+    readonly adjustToUniversal: 16;
+    readonly assumeLocal: 32;
+    readonly assumeUniversal: 64;
+    readonly roundTripKind: 128;
+};
+
+// @public
+export type DotNetDateTimeStyles = (typeof DotNetDateTimeStyles)[keyof typeof DotNetDateTimeStyles];
 
 // @public
 export class DotNetDecimalFormatter extends DotNetNumberFormatter {

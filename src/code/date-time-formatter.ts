@@ -2,7 +2,7 @@ import { Err, Ok, Result } from "@pbkware/js-utils";
 import {
   DotNetDateTimeStyleFlags,
   DotNetDateTimeStyles,
-} from "./datetime-style.js";
+} from "./date-time-styles.js";
 import { DotNetLocaleSettings } from "./locale-settings.js";
 
 type ElementType =
@@ -301,7 +301,7 @@ function tokenizeCustom(format: string): Result<Element[]> {
  */
 export class DotNetDateTimeFormatter {
   /**
-   * Set of date/time style flags that are not currently supported by this implementation.
+   * Array of date/time style flags that are not currently supported by this implementation.
    * Operations using these styles will fail.
    */
   static readonly unsupportedStyles = [
@@ -314,8 +314,21 @@ export class DotNetDateTimeFormatter {
   private format = "";
 
   /**
-   * The set of {@link DotNetDateTimeStyleFlags} flags that control date/time parsing behavior.
-   * Currently only used for future parsing functionality.
+   * The {@link (DotNetDateTimeStyles:type)} flags that control date/time parsing behavior.
+   *
+   * Use predefined combinations from {@link (DotNetDateTimeStyles:variable)} or combine
+   * {@link (DotNetDateTimeStyleFlags:variable)} using bitwise OR.
+   *
+   * @example
+   * ```typescript
+   * // Use predefined combination
+   * formatter.styles = DotNetDateTimeStyles.allowWhiteSpaces;
+   *
+   * // Combine individual flags
+   * formatter.styles =
+   *   DotNetDateTimeStyleFlags.allowLeadingWhite |
+   *   DotNetDateTimeStyleFlags.allowTrailingWhite;
+   * ```
    */
   styles: DotNetDateTimeStyles = DotNetDateTimeStyles.none;
 
