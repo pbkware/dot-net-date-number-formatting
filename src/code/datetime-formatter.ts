@@ -1,7 +1,6 @@
 import { Err, Ok, Result } from "@pbkware/js-utils";
 import {
-  DotNetDateTimeStyleId,
-  DotNetDateTimeStyleSet,
+  DotNetDateTimeStyleFlags,
   DotNetDateTimeStyles,
 } from "./datetime-style.js";
 import { DotNetLocaleSettings } from "./locale-settings.js";
@@ -305,20 +304,20 @@ export class DotNetDateTimeFormatter {
    * Set of date/time style flags that are not currently supported by this implementation.
    * Operations using these styles will fail.
    */
-  static readonly unsupportedStyles = new Set<DotNetDateTimeStyleId>([
-    DotNetDateTimeStyleId.AdjustToUniversal,
-    DotNetDateTimeStyleId.AssumeLocal,
-    DotNetDateTimeStyleId.AssumeUniversal,
-    DotNetDateTimeStyleId.RoundTripKind,
-  ]);
+  static readonly unsupportedStyles = [
+    DotNetDateTimeStyleFlags.adjustToUniversal,
+    DotNetDateTimeStyleFlags.assumeLocal,
+    DotNetDateTimeStyleFlags.assumeUniversal,
+    DotNetDateTimeStyleFlags.roundTripKind,
+  ];
 
   private format = "";
 
   /**
-   * The set of {@link DotNetDateTimeStyleId} flags that control date/time parsing behavior.
+   * The set of {@link DotNetDateTimeStyleFlags} flags that control date/time parsing behavior.
    * Currently only used for future parsing functionality.
    */
-  styles: DotNetDateTimeStyleSet = new Set(DotNetDateTimeStyles.none);
+  styles: DotNetDateTimeStyles = DotNetDateTimeStyles.none;
 
   /**
    * The locale settings that determine date/time separators and formatting conventions.
@@ -512,13 +511,13 @@ export class DotNetDateTimeFormatter {
     let parseText = strValue;
 
     if (
-      this.styles.has(DotNetDateTimeStyleId.AllowLeadingWhite) &&
-      this.styles.has(DotNetDateTimeStyleId.AllowTrailingWhite)
+      this.styles & DotNetDateTimeStyles.allowLeadingWhite &&
+      this.styles & DotNetDateTimeStyles.allowTrailingWhite
     ) {
       parseText = parseText.trim();
-    } else if (this.styles.has(DotNetDateTimeStyleId.AllowLeadingWhite)) {
+    } else if (this.styles & DotNetDateTimeStyles.allowLeadingWhite) {
       parseText = parseText.trimStart();
-    } else if (this.styles.has(DotNetDateTimeStyleId.AllowTrailingWhite)) {
+    } else if (this.styles & DotNetDateTimeStyles.allowTrailingWhite) {
       parseText = parseText.trimEnd();
     }
 

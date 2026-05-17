@@ -326,7 +326,9 @@ describe("Library Side Effects", () => {
 
       // Verify DotNetDateTimeStyles exists and contains Sets
       expect(dateTimeStyleModule.DotNetDateTimeStyles).toBeDefined();
-      expect(dateTimeStyleModule.DotNetDateTimeStyles.none).toBeInstanceOf(Set);
+      expect(dateTimeStyleModule.DotNetDateTimeStyles.none).toBeTypeOf(
+        "number",
+      );
     });
   });
 
