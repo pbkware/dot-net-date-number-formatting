@@ -49,13 +49,13 @@
     "publish": "npm publish --access=public"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.58.2",
+    "@microsoft/api-extractor": "^7.58.7",
     "del-cli": "^7.0.0",
     "lws": "^4.2.0",
     "lws-static": "^3.1.1",
     "typedoc": "^0.28.19",
-    "typescript": "^6.0.2",
-    "vitest": "^4.1.4"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6"
   },
   "dependencies": {
     "@pbkware/js-utils": "^0.9.1"
