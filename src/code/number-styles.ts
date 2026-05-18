@@ -6,11 +6,10 @@
  * @example
  * ```typescript
  * // Combine individual flags
- * formatter.styles = new Set([
- *   DotNetNumberStyleFlags.AllowLeadingSign,
- *   DotNetNumberStyleFlags.AllowDecimalPoint,
- *   DotNetNumberStyleFlags.AllowThousands
- * ]);
+ * formatter.styles =
+ *   DotNetNumberStyleFlags.allowLeadingSign |
+ *   DotNetNumberStyleFlags.allowDecimalPoint |
+ *   DotNetNumberStyleFlags.allowThousands;
  * ```
  *
  * @public
@@ -192,74 +191,3 @@ export const DotNetNumberStyles = {
  */
 export type DotNetNumberStyles =
   (typeof DotNetNumberStyles)[keyof typeof DotNetNumberStyles];
-
-// /** @internal */
-// export class DotNetNumberStylesInfo {
-//   static toString(styles: DotNetNumberStyleFlags): string {
-//     return this.toXmlValue(styles);
-//   }
-
-//   static toXmlValue(styles: DotNetNumberStyleFlags): string {
-//     if (isSameSet(styles, DotNetNumberStyles.any)) return "Any";
-//     if (isSameSet(styles, DotNetNumberStyles.currency)) return "Currency";
-//     if (isSameSet(styles, DotNetNumberStyles.float)) return "Float";
-//     if (isSameSet(styles, DotNetNumberStyles.hexNumber)) return "HexNumber";
-//     if (isSameSet(styles, DotNetNumberStyles.integer)) return "Integer";
-//     if (isSameSet(styles, DotNetNumberStyles.number)) return "Number";
-
-//     return CommaText.fromStringArray(Array.from(styles.values()));
-//   }
-
-//   static tryFromString(value: string): Result<DotNetNumberStyleFlags> {
-//     return this.tryFromXmlValue(value);
-//   }
-
-//   static tryFromXmlValue(value: string): Result<DotNetNumberStyleFlags> {
-//     const normalized = value.trim();
-//     if (normalized.length === 0 || normalized.toLowerCase() === "none") {
-//       return new Ok(new Set(DotNetNumberStyles.none));
-//     }
-
-//     const canonical = normalized.toLowerCase();
-//     if (canonical === "any") return new Ok(new Set(DotNetNumberStyles.any));
-//     if (canonical === "currency")
-//       return new Ok(new Set(DotNetNumberStyles.currency));
-//     if (canonical === "float") return new Ok(new Set(DotNetNumberStyles.float));
-//     if (canonical === "hexnumber")
-//       return new Ok(new Set(DotNetNumberStyles.hexNumber));
-//     if (canonical === "integer")
-//       return new Ok(new Set(DotNetNumberStyles.integer));
-//     if (canonical === "number")
-//       return new Ok(new Set(DotNetNumberStyles.number));
-
-//     const commaTextResult = CommaText.tryToStringArray(normalized);
-//     if (commaTextResult.isErr()) {
-//       return commaTextResult.createOuter(
-//         "Invalid comma-separated styles string",
-//       );
-//     }
-
-//     const result = new Set<DotNetNumberStyleFlags>();
-//     for (const part of commaTextResult.value) {
-//       const match = Object.values(DotNetNumberStyleFlags).find(
-//         (x) => x.toLowerCase() === part.toLowerCase(),
-//       );
-//       if (match === undefined) {
-//         return new Err(`Invalid style: ${part}`);
-//       }
-//       result.add(match);
-//     }
-
-//     return new Ok(result);
-//   }
-
-//   static tryFromXmlValueWithDefault(
-//     value: string,
-//     defaultStyles: DotNetNumberStyleFlags,
-//   ): Result<DotNetNumberStyleFlags> {
-//     if (value.trim().length === 0) {
-//       return new Ok(new Set(defaultStyles));
-//     }
-//     return this.tryFromXmlValue(value);
-//   }
-// }
