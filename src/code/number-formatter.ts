@@ -1,10 +1,6 @@
 import { Err, Ok, Result } from "@pbkware/js-utils";
 import { DotNetLocaleSettings } from "./locale-settings.js";
-import {
-  DotNetNumberStyleId,
-  DotNetNumberStyleSet,
-  DotNetNumberStyles,
-} from "./number-style.js";
+import { DotNetNumberStyles } from "./number-styles.js";
 
 type ElementType =
   | "standard"
@@ -64,21 +60,14 @@ export class DotNetNumberFormatter {
   private sections: FormatSection[] = [];
 
   /**
-   * The set of {@link DotNetNumberStyleId} flags that control which number formats are allowed during parsing.
+   * The {@link (DotNetNumberStyles:variable)} that control which number formats are allowed during parsing.
    *
    * @example
    * ```typescript
-   * // Use predefined styles
-   * formatter.styles = DotNetNumberStyles.number;
-   *
-   * // Or combine individual flags
-   * formatter.styles = new Set([
-   *   DotNetNumberStyleId.AllowLeadingSign,
-   *   DotNetNumberStyleId.AllowDecimalPoint
-   * ]);
+   * formatter.styles = DotNetNumberStyles.allowLeadingSign | DotNetNumberStyles.allowDecimalPoint;
    * ```
    */
-  styles: DotNetNumberStyleSet = new Set(DotNetNumberStyles.number);
+  styles: DotNetNumberStyles = DotNetNumberStyles.number;
 
   /**
    * The locale settings that determine decimal/thousands separators and other culture-specific formatting.
@@ -737,17 +726,28 @@ export class DotNetNumberFormatter {
     let unstyled = value;
 
     if (
-      this.styles.has(DotNetNumberStyleId.AllowLeadingWhite) &&
-      this.styles.has(DotNetNumberStyleId.AllowTrailingWhite)
+      (this.styles &
+        (DotNetNumberStyles.allowLeadingWhite |
+          DotNetNumberStyles.allowTrailingWhite)) >
+      0
     ) {
       unstyled = unstyled.trim();
-    } else if (this.styles.has(DotNetNumberStyleId.AllowLeadingWhite)) {
+    } else if (
+      (this.styles & DotNetNumberStyles.allowLeadingWhite) ===
+      DotNetNumberStyles.allowLeadingWhite
+    ) {
       unstyled = unstyled.trimStart();
-    } else if (this.styles.has(DotNetNumberStyleId.AllowTrailingWhite)) {
+    } else if (
+      (this.styles & DotNetNumberStyles.allowTrailingWhite) ===
+      DotNetNumberStyles.allowTrailingWhite
+    ) {
       unstyled = unstyled.trimEnd();
     }
 
-    if (this.styles.has(DotNetNumberStyleId.AllowThousands)) {
+    if (
+      (this.styles & DotNetNumberStyles.allowThousands) ===
+      DotNetNumberStyles.allowThousands
+    ) {
       unstyled = unstyled.split(this.localeSettings.thousandSeparator).join("");
     }
 
@@ -764,7 +764,8 @@ export class DotNetNumberFormatter {
     }
 
     if (
-      this.styles.has(DotNetNumberStyleId.AllowCurrencySymbol) &&
+      (this.styles & DotNetNumberStyles.allowCurrencySymbol) ===
+        DotNetNumberStyles.allowCurrencySymbol &&
       unstyled.startsWith(this.localeSettings.currencyString)
     ) {
       unstyled = unstyled.slice(this.localeSettings.currencyString.length);
@@ -776,13 +777,17 @@ export class DotNetNumberFormatter {
 
     let negated = false;
     if (
-      this.styles.has(DotNetNumberStyleId.AllowParentheses) &&
+      (this.styles & DotNetNumberStyles.allowParentheses) ===
+        DotNetNumberStyles.allowParentheses &&
       unstyled.startsWith("(") &&
       unstyled.endsWith(")")
     ) {
       unstyled = unstyled.slice(1, -1);
       negated = true;
-    } else if (this.styles.has(DotNetNumberStyleId.AllowTrailingSign)) {
+    } else if (
+      (this.styles & DotNetNumberStyles.allowTrailingSign) ===
+      DotNetNumberStyles.allowTrailingSign
+    ) {
       if (unstyled.endsWith("+")) {
         unstyled = unstyled.slice(0, -1);
         negated = false;
@@ -867,8 +872,14 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
 
     let { unstyled: text, negated } = unstyled.value;
 
-    if (this.styles.has(DotNetNumberStyleId.AllowHexSpecifier)) {
-      if (this.styles.has(DotNetNumberStyleId.AllowLeadingSign)) {
+    if (
+      (this.styles & DotNetNumberStyles.allowHexSpecifier) ===
+      DotNetNumberStyles.allowHexSpecifier
+    ) {
+      if (
+        (this.styles & DotNetNumberStyles.allowLeadingSign) ===
+        DotNetNumberStyles.allowLeadingSign
+      ) {
         if (text.startsWith("+")) {
           text = text.slice(1);
         } else if (text.startsWith("-")) {
@@ -887,16 +898,19 @@ export class DotNetIntegerFormatter extends DotNetNumberFormatter {
 
     const hasLeadingSign = text.startsWith("+") || text.startsWith("-");
     if (
-      !this.styles.has(DotNetNumberStyleId.AllowLeadingSign) &&
+      (this.styles & DotNetNumberStyles.allowLeadingSign) !==
+        DotNetNumberStyles.allowLeadingSign &&
       hasLeadingSign
     ) {
       return new Err("Unallowed leading sign character");
     }
 
     const parseAsFloat =
-      (this.styles.has(DotNetNumberStyleId.AllowExponent) &&
+      ((this.styles & DotNetNumberStyles.allowExponent) ===
+        DotNetNumberStyles.allowExponent &&
         this.hasExponentChar(text)) ||
-      (this.styles.has(DotNetNumberStyleId.AllowDecimalPoint) &&
+      ((this.styles & DotNetNumberStyles.allowDecimalPoint) ===
+        DotNetNumberStyles.allowDecimalPoint &&
         this.hasDecimalChar(text));
 
     if (parseAsFloat) {
@@ -1000,7 +1014,8 @@ export class DotNetFloatFormatter extends DotNetNumberFormatter {
     const hasLeadingSign = text.startsWith("+") || text.startsWith("-");
 
     if (
-      !this.styles.has(DotNetNumberStyleId.AllowLeadingSign) &&
+      (this.styles & DotNetNumberStyles.allowLeadingSign) !==
+        DotNetNumberStyles.allowLeadingSign &&
       hasLeadingSign
     ) {
       return new Err("Unallowed leading sign character");
@@ -1009,7 +1024,8 @@ export class DotNetFloatFormatter extends DotNetNumberFormatter {
     // The format string only affects output formatting, not input parsing capabilities.
     // Scientific notation like "1.23e5" should always be parseable.
     if (
-      !this.styles.has(DotNetNumberStyleId.AllowDecimalPoint) &&
+      (this.styles & DotNetNumberStyles.allowDecimalPoint) !==
+        DotNetNumberStyles.allowDecimalPoint &&
       this.hasDecimalChar(text)
     ) {
       return new Err("Unallowed decimal point character");

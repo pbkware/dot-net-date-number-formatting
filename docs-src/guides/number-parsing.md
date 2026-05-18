@@ -22,38 +22,37 @@ if (result.isOk()) {
 
 ## Number Style Flags
 
-Control which number formats are allowed during parsing using `DotNetNumberStyleId`:
+Control which number formats are allowed during parsing using `DotNetNumberStyleFlags`:
 
 ### Available Flags
 
 | Flag | Description |
 |------|-------------|
-| `AllowLeadingWhite` | Permit leading whitespace |
-| `AllowTrailingWhite` | Permit trailing whitespace |
-| `AllowLeadingSign` | Permit leading +/- sign |
-| `AllowTrailingSign` | Permit trailing +/- sign |
-| `AllowParentheses` | Permit parentheses for negatives |
-| `AllowDecimalPoint` | Permit decimal point |
-| `AllowThousands` | Permit thousands separator |
-| `AllowExponent` | Permit exponential notation (e/E) |
-| `AllowCurrencySymbol` | Permit currency symbol |
-| `AllowHexSpecifier` | Parse as hexadecimal |
+| `allowLeadingWhite` | Permit leading whitespace |
+| `allowTrailingWhite` | Permit trailing whitespace |
+| `allowLeadingSign` | Permit leading +/- sign |
+| `allowTrailingSign` | Permit trailing +/- sign |
+| `allowParentheses` | Permit parentheses for negatives |
+| `allowDecimalPoint` | Permit decimal point |
+| `allowThousands` | Permit thousands separator |
+| `allowExponent` | Permit exponential notation (e/E) |
+| `allowCurrencySymbol` | Permit currency symbol |
+| `allowHexSpecifier` | Parse as hexadecimal |
 
 ### Custom Style Combinations
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleFlags, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
-// Configure allowed styles
-formatter.styles = new Set([
-  DotNetNumberStyleId.AllowLeadingWhite,
-  DotNetNumberStyleId.AllowTrailingWhite,
-  DotNetNumberStyleId.AllowLeadingSign,
-  DotNetNumberStyleId.AllowDecimalPoint,
-]);
+// Configure allowed styles using bitwise OR
+formatter.styles = 
+  DotNetNumberStyleFlags.allowLeadingWhite |
+  DotNetNumberStyleFlags.allowTrailingWhite |
+  DotNetNumberStyleFlags.allowLeadingSign |
+  DotNetNumberStyleFlags.allowDecimalPoint;
 
 // These will parse successfully
 let result = formatter.tryFromString('  -123.45  ');
@@ -93,7 +92,7 @@ Basic integer parsing with sign and whitespace:
 ```typescript
 formatter.styles = DotNetNumberStyles.integer;
 
-// Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign
+// Includes: allowLeadingWhite, allowTrailingWhite, allowLeadingSign
 formatter.tryFromString('  -123  ');  // OK: -123
 formatter.tryFromString('+456');      // OK: 456
 formatter.tryFromString('123.45');    // Error (no decimal)
@@ -106,8 +105,8 @@ Standard number parsing:
 ```typescript
 formatter.styles = DotNetNumberStyles.number;
 
-// Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign,
-//           AllowTrailingSign, AllowDecimalPoint, AllowThousands
+// Includes: allowLeadingWhite, allowTrailingWhite, allowLeadingSign,
+//           allowTrailingSign, allowDecimalPoint, allowThousands
 formatter.tryFromString('  1,234.56  ');  // OK: 1234.56
 formatter.tryFromString('-123.45');       // OK: -123.45
 formatter.tryFromString('123.45+');       // OK: 123.45
@@ -121,8 +120,8 @@ Floating-point parsing with exponent support:
 ```typescript
 formatter.styles = DotNetNumberStyles.float;
 
-// Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign,
-//           AllowDecimalPoint, AllowExponent
+// Includes: allowLeadingWhite, allowTrailingWhite, allowLeadingSign,
+//           allowDecimalPoint, allowExponent
 formatter.tryFromString('1.23e+10');    // OK: 12300000000
 formatter.tryFromString('-4.56E-2');    // OK: -0.0456
 formatter.tryFromString('1,234.56');    // Error (no thousands)
@@ -135,9 +134,9 @@ Currency parsing:
 ```typescript
 formatter.styles = DotNetNumberStyles.currency;
 
-// Includes: AllowLeadingWhite, AllowTrailingWhite, AllowLeadingSign,
-//           AllowTrailingSign, AllowDecimalPoint, AllowThousands,
-//           AllowCurrencySymbol, AllowParentheses
+// Includes: allowLeadingWhite, allowTrailingWhite, allowLeadingSign,
+//           allowTrailingSign, allowDecimalPoint, allowThousands,
+//           allowCurrencySymbol, allowParentheses
 formatter.tryFromString('$1,234.56');      // OK: 1234.56
 formatter.tryFromString('($1,234.56)');    // OK: -1234.56
 formatter.tryFromString('  $123.45  ');    // OK: 123.45
@@ -167,7 +166,7 @@ import { DotNetIntegerFormatter, DotNetNumberStyles } from '@pbkware/dot-net-dat
 const intFormatter = new DotNetIntegerFormatter();
 intFormatter.styles = DotNetNumberStyles.hexNumber;
 
-// Includes: AllowLeadingWhite, AllowTrailingWhite, AllowHexSpecifier
+// Includes: allowLeadingWhite, allowTrailingWhite, allowHexSpecifier
 const result = intFormatter.tryFromString('  FF  ');
 console.log(result.value);  // 255n
 
@@ -180,21 +179,20 @@ intFormatter.tryFromString('ABCD');  // OK: 43981n
 ### Flexible Number Parsing
 
 ```typescript
-import { DotNetFloatFormatter, DotNetNumberStyleId, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
+import { DotNetFloatFormatter, DotNetNumberStyleFlags, DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 
 const formatter = new DotNetFloatFormatter();
 formatter.localeSettings = DotNetLocaleSettings.createInvariant();
 
-// Configure flexible parsing
-formatter.styles = new Set([
-  DotNetNumberStyleId.AllowLeadingWhite,
-  DotNetNumberStyleId.AllowTrailingWhite,
-  DotNetNumberStyleId.AllowLeadingSign,
-  DotNetNumberStyleId.AllowTrailingSign,
-  DotNetNumberStyleId.AllowDecimalPoint,
-  DotNetNumberStyleId.AllowThousands,
-  DotNetNumberStyleId.AllowParentheses,
-]);
+// Configure flexible parsing using bitwise OR
+formatter.styles = 
+  DotNetNumberStyleFlags.allowLeadingWhite |
+  DotNetNumberStyleFlags.allowTrailingWhite |
+  DotNetNumberStyleFlags.allowLeadingSign |
+  DotNetNumberStyleFlags.allowTrailingSign |
+  DotNetNumberStyleFlags.allowDecimalPoint |
+  DotNetNumberStyleFlags.allowThousands |
+  DotNetNumberStyleFlags.allowParentheses;
 
 // All these formats parse successfully
 const testValues = [

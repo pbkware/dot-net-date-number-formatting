@@ -113,7 +113,7 @@ export class DotNetNumberFormatter {
     parseErrorText: string;
     // (undocumented)
     protected setParseErrorText(value: string): false;
-    styles: DotNetNumberStyleSet;
+    styles: DotNetNumberStyles;
     // (undocumented)
     protected trimTrailingPadZeros(value: string): string;
     // (undocumented)
@@ -127,50 +127,45 @@ export class DotNetNumberFormatter {
 }
 
 // @public
-export enum DotNetNumberStyleId {
-    AllowCurrencySymbol = "AllowCurrencySymbol",
-    AllowDecimalPoint = "AllowDecimalPoint",
-    AllowExponent = "AllowExponent",
-    AllowHexSpecifier = "AllowHexSpecifier",
-    AllowLeadingSign = "AllowLeadingSign",
-    AllowLeadingWhite = "AllowLeadingWhite",
-    AllowParentheses = "AllowParentheses",
-    AllowThousands = "AllowThousands",
-    AllowTrailingSign = "AllowTrailingSign",
-    AllowTrailingWhite = "AllowTrailingWhite"
-}
-
-// Warning: (ae-internal-missing-underscore) The name "DotNetNumberStyles" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const DotNetNumberStyles: {
-    none: Set<DotNetNumberStyleId>;
-    any: Set<DotNetNumberStyleId>;
-    currency: Set<DotNetNumberStyleId>;
-    float: Set<DotNetNumberStyleId>;
-    hexNumber: Set<DotNetNumberStyleId>;
-    integer: Set<DotNetNumberStyleId>;
-    number: Set<DotNetNumberStyleId>;
+export const DotNetNumberStyleFlags: {
+    readonly allowLeadingWhite: 1;
+    readonly allowTrailingWhite: 2;
+    readonly allowLeadingSign: 4;
+    readonly allowTrailingSign: 8;
+    readonly allowParentheses: 16;
+    readonly allowDecimalPoint: 32;
+    readonly allowThousands: 64;
+    readonly allowExponent: 128;
+    readonly allowCurrencySymbol: 256;
+    readonly allowHexSpecifier: 512;
 };
 
 // @public
-export type DotNetNumberStyleSet = Set<DotNetNumberStyleId>;
+export type DotNetNumberStyleFlags = (typeof DotNetNumberStyleFlags)[keyof typeof DotNetNumberStyleFlags];
 
-// Warning: (ae-internal-missing-underscore) The name "DotNetNumberStylesInfo" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class DotNetNumberStylesInfo {
-    // (undocumented)
-    static toString(styles: DotNetNumberStyleSet): string;
-    // (undocumented)
-    static toXmlValue(styles: DotNetNumberStyleSet): string;
-    // (undocumented)
-    static tryFromString(value: string): Result<DotNetNumberStyleSet>;
-    // (undocumented)
-    static tryFromXmlValue(value: string): Result<DotNetNumberStyleSet>;
-    // (undocumented)
-    static tryFromXmlValueWithDefault(value: string, defaultStyles: DotNetNumberStyleSet): Result<DotNetNumberStyleSet>;
-}
+// @public
+export const DotNetNumberStyles: {
+    readonly none: 0;
+    readonly allowLeadingWhite: 1;
+    readonly allowTrailingWhite: 2;
+    readonly allowLeadingSign: 4;
+    readonly allowTrailingSign: 8;
+    readonly allowParentheses: 16;
+    readonly allowDecimalPoint: 32;
+    readonly allowThousands: 64;
+    readonly allowExponent: 128;
+    readonly allowCurrencySymbol: 256;
+    readonly allowHexSpecifier: 512;
+    readonly any: number;
+    readonly currency: number;
+    readonly float: number;
+    readonly hexNumber: number;
+    readonly integer: number;
+    readonly number: number;
+};
+
+// @public
+export type DotNetNumberStyles = (typeof DotNetNumberStyles)[keyof typeof DotNetNumberStyles];
 
 // (No @packageDocumentation comment for this package)
 
