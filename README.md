@@ -134,6 +134,11 @@ npm run docs:build
 
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/pbkware/dot-net-date-number-formatting).
 
+## Recent Releases
+
+- **0.3.0**\
+Rename and rework DotNetNumberStyles and DotNetDateTimeStyles so that they are const objects instead of enums and better align with Dot Net equivalents.
+
 ## History
 
 This library was created by porting the relevant portions of the Delphi library [TFieldedText](https://sourceforge.net/projects/tfieldedtext/) (at [SourceForge](https://sourceforge.net/projects/tfieldedtext/)) (Note that the commit attributions are incorrect in TFieldedText - they should be attributed to Paul Klink.)  The porting and documentation was carried out with AI (GitHub co-pilot).
