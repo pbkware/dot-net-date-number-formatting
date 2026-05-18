@@ -16,7 +16,18 @@
   // Persist bash history across container rebuilds
   "mounts": [
     "source=dot-net-date-number-formatting-bashhistory,target=/home/node/.container-bash-history,type=volume"
-  ]
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ban.spellright",
+        "esbenp.prettier-vscode",
+        "DavidAnson.vscode-markdownlint",
+        "EditorConfig.EditorConfig",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "yarn install",
