@@ -316,13 +316,13 @@ describe("Library Side Effects", () => {
     });
 
     it("static style sets are pure constant values", async () => {
-      const numberStyleModule = await import("../src/code/number-style.js");
-      const dateTimeStyleModule = await import("../src/code/datetime-style.js");
+      const numberStyleModule = await import("../src/code/number-styles.js");
+      const dateTimeStyleModule = await import("../src/code/date-time-styles.js");
 
       // Verify DotNetNumberStyles exists and contains Sets
       expect(numberStyleModule.DotNetNumberStyles).toBeDefined();
-      expect(numberStyleModule.DotNetNumberStyles.none).toBeInstanceOf(Set);
-      expect(numberStyleModule.DotNetNumberStyles.number).toBeInstanceOf(Set);
+      expect(numberStyleModule.DotNetNumberStyles.none).toBe(0);
+      expect(numberStyleModule.DotNetNumberStyles.number).toBe(111);
 
       // Verify DotNetDateTimeStyles exists and contains Sets
       expect(dateTimeStyleModule.DotNetDateTimeStyles).toBeDefined();
@@ -338,7 +338,7 @@ describe("Library Side Effects", () => {
       const { DotNetNumberFormatter } =
         await import("../src/code/number-formatter.js");
       const { DotNetDateTimeFormatter } =
-        await import("../src/code/datetime-formatter.js");
+        await import("../src/code/date-time-formatter.js");
 
       // Create instances to verify they work independently
       const numberFormatter = new DotNetNumberFormatter();
@@ -353,11 +353,11 @@ describe("Library Side Effects", () => {
 
     it("partial imports do not trigger initialization of unused modules", async () => {
       // Import only one module
-      const { DotNetNumberStyleId } =
-        await import("../src/code/number-style.js");
+      const { DotNetNumberStyleFlags } =
+        await import("../src/code/number-styles.js");
 
       // Verify it works
-      expect(DotNetNumberStyleId.AllowDecimalPoint).toBe("AllowDecimalPoint");
+      expect(DotNetNumberStyleFlags.allowDecimalPoint).toBe(32);
 
       // This test passes if no errors are thrown
       expect(true).toBe(true);

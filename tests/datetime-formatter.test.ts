@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DotNetDateTimeFormatter } from "../src/code/datetime-formatter";
+import { DotNetDateTimeFormatter } from "../src/code/date-time-formatter";
 import { DotNetLocaleSettings } from "../src/code/locale-settings";
 
 describe("DotNetDateTimeFormatter", () => {

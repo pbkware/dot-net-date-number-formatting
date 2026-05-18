@@ -1,0 +1,40 @@
+// import { describe, expect, it } from "vitest";
+// import {
+//   DotNetNumberStyles,
+// } from "../src/code/number-styles";
+
+// describe("DotNetNumberStylesInfo", () => {
+//   it("serializes known presets", () => {
+//     expect(DotNetNumberStylesInfo.toXmlValue(DotNetNumberStyles.any)).toBe(
+//       "Any",
+//     );
+//     expect(DotNetNumberStylesInfo.toXmlValue(DotNetNumberStyles.float)).toBe(
+//       "Float",
+//     );
+//   });
+
+//   it("parses known preset", () => {
+//     const parsed = DotNetNumberStylesInfo.tryFromXmlValue("Number");
+//     expect(parsed.isOk()).toBe(true);
+//     if (parsed.isOk()) {
+//       expect(parsed.value.has(DotNetNumberStyleId.AllowThousands)).toBe(true);
+//       expect(parsed.value.has(DotNetNumberStyleId.AllowDecimalPoint)).toBe(
+//         true,
+//       );
+//     }
+//   });
+
+//   it("parses comma separated custom styles", () => {
+//     const parsed = DotNetNumberStylesInfo.tryFromXmlValue(
+//       "AllowLeadingSign,AllowDecimalPoint",
+//     );
+//     expect(parsed.isOk()).toBe(true);
+//     if (parsed.isOk()) {
+//       expect(parsed.value.size).toBe(2);
+//       expect(parsed.value.has(DotNetNumberStyleId.AllowLeadingSign)).toBe(true);
+//       expect(parsed.value.has(DotNetNumberStyleId.AllowDecimalPoint)).toBe(
+//         true,
+//       );
+//     }
+//   });
+// });

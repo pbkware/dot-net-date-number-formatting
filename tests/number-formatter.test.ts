@@ -4,16 +4,13 @@ import {
   DotNetFloatFormatter,
   DotNetIntegerFormatter,
 } from "../src/code/number-formatter";
-import { DotNetNumberStyleId } from "../src/code/number-style";
+import { DotNetNumberStyles } from "../src/code/number-styles";
 
 describe("DotNetIntegerFormatter - Parsing", () => {
   it("parses hex with leading sign when style allows", () => {
     const formatter = new DotNetIntegerFormatter();
     formatter.localeSettings = DotNetLocaleSettings.createInvariant();
-    formatter.styles = new Set([
-      DotNetNumberStyleId.AllowHexSpecifier,
-      DotNetNumberStyleId.AllowLeadingSign,
-    ]);
+    formatter.styles = DotNetNumberStyles.allowHexSpecifier | DotNetNumberStyles.allowLeadingSign;
 
     const result = formatter.tryFromString("-1A");
     expect(result.isOk()).toBe(true);
@@ -24,7 +21,7 @@ describe("DotNetIntegerFormatter - Parsing", () => {
 
   it("rejects leading sign when not allowed", () => {
     const formatter = new DotNetIntegerFormatter();
-    formatter.styles = new Set();
+    formatter.styles = 0;
 
     const result = formatter.tryFromString("-12");
     expect(result.isOk()).toBe(false);
@@ -38,12 +35,7 @@ describe("DotNetFloatFormatter - Parsing", () => {
   it("parses trailing sign when style allows", () => {
     const formatter = new DotNetFloatFormatter();
     formatter.localeSettings = DotNetLocaleSettings.createInvariant();
-    formatter.styles = new Set([
-      DotNetNumberStyleId.AllowDecimalPoint,
-      DotNetNumberStyleId.AllowTrailingSign,
-      DotNetNumberStyleId.AllowLeadingSign,
-      DotNetNumberStyleId.AllowExponent,
-    ]);
+    formatter.styles = DotNetNumberStyles.allowDecimalPoint | DotNetNumberStyles.allowTrailingSign | DotNetNumberStyles.allowLeadingSign | DotNetNumberStyles.allowExponent;
 
     const result = formatter.tryFromString("12.5-");
     expect(result.isOk()).toBe(true);
@@ -588,13 +580,7 @@ describe("DotNetLocaleSettings - Culture-Aware Char Conversion", () => {
 describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
   const formatter = new DotNetFloatFormatter();
   formatter.localeSettings = DotNetLocaleSettings.createInvariant();
-  formatter.styles = new Set([
-    DotNetNumberStyleId.AllowLeadingSign,
-    DotNetNumberStyleId.AllowDecimalPoint,
-    DotNetNumberStyleId.AllowLeadingWhite,
-    DotNetNumberStyleId.AllowTrailingWhite,
-    DotNetNumberStyleId.AllowExponent,
-  ]);
+  formatter.styles = DotNetNumberStyles.allowLeadingSign | DotNetNumberStyles.allowDecimalPoint | DotNetNumberStyles.allowLeadingWhite | DotNetNumberStyles.allowTrailingWhite | DotNetNumberStyles.allowExponent;
 
   describe("Lowercase e notation", () => {
     it("parses lowercase e with positive exponent", () => {
@@ -796,13 +782,7 @@ describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
       const frSettings = DotNetLocaleSettings.create("fr-FR");
       const frFormatter = new DotNetFloatFormatter();
       frFormatter.localeSettings = frSettings;
-      frFormatter.styles = new Set([
-        DotNetNumberStyleId.AllowLeadingSign,
-        DotNetNumberStyleId.AllowDecimalPoint,
-        DotNetNumberStyleId.AllowLeadingWhite,
-        DotNetNumberStyleId.AllowTrailingWhite,
-        DotNetNumberStyleId.AllowExponent,
-      ]);
+      frFormatter.styles = DotNetNumberStyles.allowLeadingSign | DotNetNumberStyles.allowDecimalPoint | DotNetNumberStyles.allowLeadingWhite | DotNetNumberStyles.allowTrailingWhite | DotNetNumberStyles.allowExponent;
 
       // French uses comma as decimal separator - should parse "1,23e5"
       const result = frFormatter.tryFromString("1,23e5");
@@ -816,13 +796,7 @@ describe("DotNetFloatFormatter - Scientific Notation Parsing", () => {
       const deSettings = DotNetLocaleSettings.create("de-DE");
       const deFormatter = new DotNetFloatFormatter();
       deFormatter.localeSettings = deSettings;
-      deFormatter.styles = new Set([
-        DotNetNumberStyleId.AllowLeadingSign,
-        DotNetNumberStyleId.AllowDecimalPoint,
-        DotNetNumberStyleId.AllowLeadingWhite,
-        DotNetNumberStyleId.AllowTrailingWhite,
-        DotNetNumberStyleId.AllowExponent,
-      ]);
+      deFormatter.styles = DotNetNumberStyles.allowLeadingSign | DotNetNumberStyles.allowDecimalPoint | DotNetNumberStyles.allowLeadingWhite | DotNetNumberStyles.allowTrailingWhite | DotNetNumberStyles.allowExponent;
 
       // German uses comma as decimal separator
       // Scientific notation exponent should always use 'e' or 'E', not translated
